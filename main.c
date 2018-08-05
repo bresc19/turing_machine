@@ -32,7 +32,7 @@ int  check(int acc[], int i);
 void result(int i);
 void clean(tuple_t * root);
 void compute(tuple_t * tmp, char tape[], int i, int acc[]);
-tuple_t * insert_tail(tuple_t *head, tuple_t *new);
+//tuple_t * insert_tail(tuple_t *head, tuple_t *new);
 tuple_t *insert_tuple(tuple_t *tmp, tuple_t *pmt, tuple_t *a);
 
 int count=0;
@@ -86,7 +86,7 @@ int main(int argc, const char *argv[]) {
                     tmp->move = 0;
 
                    root = insert_tuple(tmp, root, root);
-                   list_state = insert_tail(list_state, tmp);
+                  // list_state = insert_tail(list_state, tmp);
 
                 scanf("%s", input);
                 z++;
