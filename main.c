@@ -185,7 +185,7 @@ int main(int argc, const char *argv[]) {
 tuple_t *insert_tuple(tuple_t *tmp, tuple_t *pmt, tuple_t *a) {
 
     int flag = 0;
-    tuple_t * first;
+    tuple_t * first = NULL;
     if (pmt == NULL) {
         pmt = ALLOC_TUPLE;
         pmt->next_state = tmp->next_state;
