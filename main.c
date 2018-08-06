@@ -34,6 +34,8 @@ void clean(tuple_t * root);
 void compute(tuple_t * tmp, char tape[], int i, int acc[]);
 //tuple_t * insert_tail(tuple_t *head, tuple_t new);
 tuple_t *insert_tuple(tuple_t *tmp, tuple_t *pmt, tuple_t *a);
+void setTuple(tuple_t * root, int index);
+
 
 int count=0;
 int max_state = 0;
@@ -62,6 +64,7 @@ int main(int argc, const char *argv[]) {
 
     while (a != NULL) {
         strtok(input, "\n");
+
 
         tmp = ALLOC_TUPLE;
         tmp->f_child = NULL;
@@ -191,7 +194,9 @@ tuple_t *insert_tuple(tuple_t *tmp, tuple_t *pmt, tuple_t *a) {
         pmt->move = tmp->move;
         pmt->curr_state = tmp->curr_state;
         pmt->next_bro = NULL;
+        pmt -> passed = 0;
         pmt->f_child = NULL;
+        pmt ->first_bro = NULL;
         pmt -> first_bro = pmt;
         return pmt;
     } else {
@@ -375,7 +380,7 @@ tuple_t * search(tuple_t *head, int state) {
 void compute(tuple_t *tmp, char tape[], int i, int acc[]) {
 
     char tape_2[50];
-    tuple_t *a;
+    tuple_t *a = NULL;
     for (int j = 0; tape[j] != '\0'; j++)
         tape_2[j] = tape[j];
 
@@ -511,5 +516,16 @@ void clean(tuple_t * root) {
 }
 
 
+void setTuple(tuple_t * root, int index){
 
+    if(index > 100)
+        return;
+    root ->first_bro = NULL;
+    root->next_bro = NULL;
+    root -> f_child = NULL;
+    index++;
+    setTuple(root->f_child, index);
+    setTuple(root->next_bro, index);
 
+    return;
+}
