@@ -32,7 +32,7 @@ int  check(int acc[], int i);
 void result(int i);
 void clean(tuple_t * root);
 void compute(tuple_t * tmp, char tape[], int i, int acc[]);
-tuple_t * insert_tail(tuple_t *head, tuple_t *new);
+tuple_t * insert_tail(tuple_t *head, tuple_t new);
 tuple_t *insert_tuple(tuple_t *tmp, tuple_t *pmt, tuple_t *a);
 
 int count=0;
@@ -45,21 +45,18 @@ tuple_t *root = NULL;
 int main(int argc, const char *argv[]) {
 
 
+    tuple_t aaa;
     int z;
-    char * a;
+    char *a;
     tuple_t *list_state = NULL;
     char k;
     char tape[50];
     char blank[30];
-    char input[512];
+    char input[1024];
     tuple_t *tmp = NULL;
     int i = 0;
-    tmp = ALLOC_TUPLE;
-    tmp->f_child = NULL;
-    tmp->next_bro = NULL;
-    tmp->first_bro = NULL;
 
-    a = fgets(input, 512, stdin);
+    a = fgets(input, 1024, stdin);
 
     for (int i = 0; i < 9; i++)
         blank[i] = '_';
@@ -67,8 +64,13 @@ int main(int argc, const char *argv[]) {
     while (a != NULL) {
         strtok(input, "\n");
 
+        tmp = ALLOC_TUPLE;
+        tmp->f_child = NULL;
+        tmp->next_bro = NULL;
+        tmp->first_bro = NULL;
+
         if (strcmp(input, "tr") == 0) {
-            scanf( "%s", input);
+            scanf("%s", input);
 
 
             while (strcmp(input, "acc") != 0) {
@@ -76,7 +78,7 @@ int main(int argc, const char *argv[]) {
                 tmp->curr_state = atoi(input);
                 if (max_state < i)
                     max_state = i;
-                scanf( "%s %s %s %d", &tmp->toGet, &tmp->toSet, &k, &tmp->next_state);
+                scanf("%s %s %s %d", &tmp->toGet, &tmp->toSet, &k, &tmp->next_state);
 
                 if (k == 'R')
                     tmp->move = 1;
@@ -84,7 +86,16 @@ int main(int argc, const char *argv[]) {
                     tmp->move = -1;
                 else if (k == 'S')
                     tmp->move = 0;
-                //  list_state = insert_tail(list_state, tmp);
+
+                aaa.curr_state = tmp->curr_state;
+                aaa.next_state = tmp->next_state;
+                aaa.toGet = tmp->toGet;
+                aaa.toSet = tmp->toSet;
+                aaa.move = tmp->move;
+                aaa.next_bro = NULL;
+                aaa.f_child = NULL;
+                aaa.first_bro = NULL;
+                 list_state = insert_tail(list_state, aaa);
 
                 root = insert_tuple(tmp, root, root);
                 scanf("%s", input);
@@ -105,8 +116,8 @@ int main(int argc, const char *argv[]) {
 
             for (i = 0; i < 10; i++)
                 tape[i] = '_';
-            a =  fgets(blank, 512, stdin);
-            a =  fgets(blank, 512, stdin);
+            a = fgets(blank, 1024, stdin);
+            a = fgets(blank, 1024, stdin);
 
             strtok(blank, "\n");
             for (int j = 0; blank[j] != '\0'; j++, i++)
@@ -115,14 +126,15 @@ int main(int argc, const char *argv[]) {
             for (int j = 0; j < 10; j++, i++)
                 tape[i] = '_';
 
-            /*  for(tmp = root; tmp!= NULL; tmp= tmp->next_bro){
-                  root = insert_tuple(tmp, root, root);
-              }*/
+            for (tmp = list_state; tmp != NULL; tmp = tmp->next_bro) {
+                root = insert_tuple(tmp, root, root);
+            }
+            res = 0;
             compute(root, tape, 10, acc);
             clean(root);
 
             result(res);
-            fgets(input, 512, stdin);
+            fgets(input, 1024, stdin);
             strtok(input, "\n");
             res = 0;
             count = 0;
@@ -138,13 +150,9 @@ int main(int argc, const char *argv[]) {
 
             for (int j = 0; j < 10; j++, i++)
                 tape[i] = '_';
-
+            res = 0;
             compute(root, tape, 10, acc);
             clean(root);
-            // if(count > max  && res == 1)
-            //    printf("U\n");
-            //
-            // else
             result(res);
 
 
@@ -152,11 +160,11 @@ int main(int argc, const char *argv[]) {
             count = 0;
 
 
-            a = fgets(input, 512, stdin);
+            a = fgets(input, 1024, stdin);
             strtok(input, "\n");
         }
 
-
+        free(tmp);
     }
 
 
@@ -333,20 +341,20 @@ tuple_t *insert_tuple(tuple_t *tmp, tuple_t *pmt, tuple_t *a) {
     return pmt;
 }
 
-tuple_t * search(tuple_t *head, int state){
+tuple_t * search(tuple_t *head, int state) {
     tuple_t *tmp;
-    if(state == head ->next_state && head -> f_child != NULL)
-        return head ->f_child;
-    if(head -> f_child != NULL) {
+    if (state == head->next_state && head->f_child != NULL)
+        return head->f_child;
+    if (head->f_child != NULL) {
         tmp = search(head->f_child, state);
-        if(tmp != NULL)
+        if (tmp != NULL)
             return tmp;
 
     }
 
-    if(head->next_bro != NULL) {
-        tmp =  search(head->next_bro, state);
-        if(tmp != NULL)
+    if (head->next_bro != NULL) {
+        tmp = search(head->next_bro, state);
+        if (tmp != NULL)
             return tmp;
     }
 
@@ -357,59 +365,55 @@ void compute(tuple_t *tmp, char tape[], int i, int acc[]) {
 
     char tape_2[50];
     tuple_t *a;
-    for(int j = 0; tape[j] != '\0'; j++)
-        tape_2[j]= tape[j];
+    for (int j = 0; tape[j] != '\0'; j++)
+        tape_2[j] = tape[j];
 
-    if(res == 1 || res == 2 || res == 4 )
+    if (res == 1 || res == 2 || res == 4)
         return;
-    if(tmp == NULL) {
+    if (tmp == NULL) {
         res = 0;
         return;
     }
 
-    if(count >= max){
+    if (count >= max) {
         res = 3;
     }
 
-    if(count >= max*10) {
+    if (count >= max * 10) {
         res = 4;
         return;
     }
 
 
-
-
     a = tmp;
-    while(a->next_bro != NULL) {
+    while (a->next_bro != NULL) {
         compute(a->next_bro, tape, i, acc);
         a = a->next_bro;
     }
 
 
-    if (tape_2[i] == tmp->toGet ) {
+    if (tape_2[i] == tmp->toGet) {
         tape_2[i] = tmp->toSet;
 
         i = i + tmp->move;
         count++;
-        if (check(acc, tmp->next_state) == 1 ) {
-            if(res == 0) {
+        if (check(acc, tmp->next_state) == 1) {
+            if (res == 0) {
                 res = 1;
                 return;
-            }
-            else if(res == 3)
+            } else if (res == 3)
                 res = 2;
         }
         if (tmp->curr_state == tmp->next_state) {
             compute(tmp->first_bro, tape_2, i, acc);
 
-        }
-        else if (tmp->f_child != NULL)
+        } else if (tmp->f_child != NULL)
             compute(tmp->f_child, tape_2, i, acc);
 
-        else if(res != 1){
+        else if (res != 1) {
             a = search(root, tmp->next_state);
-            if(a != NULL) {
-                if (a->passed <= 5 ) {
+            if (a != NULL) {
+                if (a->passed <= 5) {
                     a->passed++;
                     compute(a, tape_2, i, acc);
                 }
@@ -419,11 +423,7 @@ void compute(tuple_t *tmp, char tape[], int i, int acc[]) {
     } else
 
 
-
-
-
         return;
-
 
 
 }
@@ -451,19 +451,20 @@ int check(int acc[], int j) {
     return 0;
 }
 
-/*
-    tuple_t * insert_tail(tuple_t *head, tuple_t *new) {
+    tuple_t * insert_tail(tuple_t *head, tuple_t new) {
 
         tuple_t *tmp;
         if (head == NULL) {
             head = ALLOC_TUPLE;
-            head->curr_state = new->curr_state;
-            head->next_state = new->next_state;
-            head->move = new->move;
-            head->toSet = new->toSet;
-            head->toGet = new->toGet;
+            head->curr_state = new.curr_state;
+            head->next_state = new.next_state;
+            head->move = new.move;
+            head->toSet = new.toSet;
+            head->toGet = new.toGet;
+            head -> passed = 0;
             head->next_bro = NULL;
             head->f_child = NULL;
+            head -> first_bro = NULL;
             return head;
         } else {
             tmp = head;
@@ -471,31 +472,33 @@ int check(int acc[], int j) {
                 tmp = tmp->next_bro;
 
             tmp->next_bro = ALLOC_TUPLE;
-            tmp->next_bro->curr_state = new->curr_state;
-            tmp->next_bro->next_state = new->next_state;
-            tmp->next_bro->move = new->move;
-            tmp->next_bro->toSet = new->toSet;
-            tmp->next_bro->toGet = new->toGet;
+            tmp->next_bro->curr_state = new.curr_state;
+            tmp->next_bro->next_state = new.next_state;
+            tmp->next_bro->move = new.move;
+            tmp->next_bro->toSet = new.toSet;
+            tmp->next_bro->toGet = new.toGet;
             tmp->next_bro->next_bro = NULL;
+            tmp->next_bro ->passed = 0;
             tmp->next_bro->f_child = NULL;
+            tmp->next_bro ->first_bro = NULL;
             return head;
         }
     }
 
- */
 
-void clean(tuple_t * root){
-    if(root!= NULL)
-        root -> passed = 0;
-    else return;
+void clean(tuple_t * root) {
+    if (root != NULL && root->passed > 0)
+        root->passed = 0;
 
-    if(root->f_child == NULL && root->next_bro == NULL)
+    if (root->f_child == NULL && root->next_bro == NULL)
         return;
-    if(root->next_bro != NULL){
+    if (root->next_bro != NULL) {
         clean(root->next_bro);
     }
-    if(root -> f_child != NULL)
+    if (root->f_child != NULL)
         clean(root->f_child);
+
+    return;
 }
 
 
