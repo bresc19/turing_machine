@@ -89,15 +89,17 @@ int main(int argc, const char *argv[]) {
                 else if (k == 'S')
                     tmp->move = 0;
 
+                tmp->passed = 0;
+
                 list_state[z].curr_state = tmp->curr_state;
                 list_state[z].next_state = tmp->next_state;
                 list_state[z].toGet = tmp->toGet;
                 list_state[z].toSet = tmp->toSet;
                 list_state[z].move = tmp->move;
+                list_state[z].passed = 0;
                 list_state[z].next_bro = NULL;
                 list_state[z].f_child = NULL;
                 list_state[z].first_bro = NULL;
-
 
                 root = insert_tuple(tmp, root, root);
                 scanf("%s", input);
