@@ -33,10 +33,10 @@ void result(int i);
 void clean(tuple_t * root);
 void compute(tuple_t * tmp, char tape[], int i, int acc[]);
 //tuple_t * insert_tail(tuple_t *head, tuple_t new);
-tuple_t *insert_tuple(tuple_t *tmp, tuple_t *pmt, tuple_t *a);
+tuple_t *insert_tuple(tuple_t tmp, tuple_t *pmt, tuple_t *a);
 void setTuple(tuple_t * root, int index);
 
-
+int f = 0;
 int count=0;
 int max_state = 0;
 int acc[5];
@@ -54,7 +54,7 @@ int main(int argc, const char *argv[]) {
     char tape[50];
     char blank[30];
     char input[1024];
-    tuple_t *tmp = NULL;
+    tuple_t tmp;
     int i = 0;
 
     a = fgets(input, 1024, stdin);
@@ -66,10 +66,9 @@ int main(int argc, const char *argv[]) {
         strtok(input, "\n");
 
 
-        tmp = ALLOC_TUPLE;
-        tmp->f_child = NULL;
-        tmp->next_bro = NULL;
-        tmp->first_bro = NULL;
+        tmp.f_child = NULL;
+        tmp.next_bro = NULL;
+        tmp.first_bro = NULL;
 
         if (strcmp(input, "tr") == 0) {
             scanf("%s", input);
@@ -77,25 +76,25 @@ int main(int argc, const char *argv[]) {
 
             while (strcmp(input, "acc") != 0) {
 
-                tmp->curr_state = atoi(input);
+                tmp.curr_state = atoi(input);
                 if (max_state < i)
                     max_state = i;
-                scanf("%s %s %s %d", &tmp->toGet, &tmp->toSet, &k, &tmp->next_state);
+                scanf(" %c %c %c %d", &tmp.toGet, &tmp.toSet, &k, &tmp.next_state);
 
                 if (k == 'R')
-                    tmp->move = 1;
+                    tmp.move = 1;
                 else if (k == 'L')
-                    tmp->move = -1;
+                    tmp.move = -1;
                 else if (k == 'S')
-                    tmp->move = 0;
+                    tmp.move = 0;
 
-                tmp->passed = 0;
+                tmp.passed = 0;
 
-                list_state[z].curr_state = tmp->curr_state;
-                list_state[z].next_state = tmp->next_state;
-                list_state[z].toGet = tmp->toGet;
-                list_state[z].toSet = tmp->toSet;
-                list_state[z].move = tmp->move;
+                list_state[z].curr_state = tmp.curr_state;
+                list_state[z].next_state = tmp.next_state;
+                list_state[z].toGet = tmp.toGet;
+                list_state[z].toSet = tmp.toSet;
+                list_state[z].move = tmp.move;
                 list_state[z].passed = 0;
                 list_state[z].next_bro = NULL;
                 list_state[z].f_child = NULL;
@@ -130,18 +129,15 @@ int main(int argc, const char *argv[]) {
             for (int j = 0; j < 10; j++, i++)
                 tape[i] = '_';
 
-            for (int i = 0; i< z; i++) {
-                tmp->curr_state = list_state[i].curr_state;
-                tmp->next_state = list_state[i].next_state;
-                tmp->toGet = list_state[i].toGet ;
-                tmp->toSet = list_state[i].toSet;
-                tmp->move = list_state[i].move;
-                tmp->next_bro = NULL;
-                tmp->f_child = NULL;
-                tmp->first_bro = NULL;
+            while(f < z){
+                for(int i = 0; i <z; i++){
+                    insert_tuple(list_state[i], root, root);
 
-                root = insert_tuple(tmp, root, root);
+                }
+
+                f++;
             }
+
             res = 0;
             compute(root, tape, 10, acc);
             clean(root);
@@ -177,87 +173,90 @@ int main(int argc, const char *argv[]) {
             strtok(input, "\n");
         }
 
-        free(tmp);
     }
 
 
     return 0;
 }
 
-tuple_t *insert_tuple(tuple_t *tmp, tuple_t *pmt, tuple_t *a) {
+tuple_t *insert_tuple(tuple_t tmp, tuple_t *pmt, tuple_t *a) {
 
     int flag = 0;
-    tuple_t * first = NULL;
-    if (pmt == NULL) {
+    tuple_t * first;
+    if (pmt == NULL ) {
+        if(tmp.curr_state != 0)
+            return NULL;
         pmt = ALLOC_TUPLE;
-        pmt->next_state = tmp->next_state;
-        pmt->toGet = tmp->toGet;
-        pmt->toSet = tmp->toSet;
-        pmt->move = tmp->move;
-        pmt->curr_state = tmp->curr_state;
+        pmt->next_state = tmp.next_state;
+        pmt->toGet = tmp.toGet;
+        pmt->toSet = tmp.toSet;
+        pmt->move = tmp.move;
+        pmt->curr_state = tmp.curr_state;
         pmt->next_bro = NULL;
-        pmt -> passed = 0;
         pmt->f_child = NULL;
-        pmt ->first_bro = NULL;
+        pmt->passed =0;
         pmt -> first_bro = pmt;
         return pmt;
     } else {
-        if (a->curr_state == tmp->curr_state) {
-            if (tmp->curr_state != tmp->next_state) {
-                if (tmp->curr_state == a->curr_state && tmp->next_state == a->next_state && tmp->move == a->move &&
-                    tmp->toSet == a->toSet && tmp->toGet == a->toGet) {
+        if (a->curr_state == tmp.curr_state) {
+            if (tmp.curr_state != tmp.next_state) {
+                if (tmp.curr_state == a->curr_state && tmp.next_state == a->next_state && tmp.move == a->move &&
+                    tmp.toSet == a->toSet && tmp.toGet == a->toGet) {
                     flag = 1;
                 }
                 first = a;
                 while (a->next_bro != NULL) {
                     a = a->next_bro;
-                    if (tmp->curr_state == a->curr_state && tmp->next_state == a->next_state &&
-                        tmp->move == a->move &&
-                        tmp->toSet == a->toSet && tmp->toGet == a->toGet) {
+                    if (tmp.curr_state == a->curr_state && tmp.next_state == a->next_state &&
+                        tmp.move == a->move &&
+                        tmp.toSet == a->toSet && tmp.toGet == a->toGet) {
                         flag = 1;
                     }
                 }
                 if (flag == 0) {
                     a->next_bro = ALLOC_TUPLE;
-                    a->next_bro->next_state = tmp->next_state;
-                    a->next_bro->toGet = tmp->toGet;
-                    a->next_bro->toSet = tmp->toSet;
-                    a->next_bro->move = tmp->move;
-                    a->next_bro->curr_state = tmp->curr_state;
+                    a->next_bro->next_state = tmp.next_state;
+                    a->next_bro->toGet = tmp.toGet;
+                    a->next_bro->toSet = tmp.toSet;
+                    a->next_bro->move = tmp.move;
+                    a->next_bro->curr_state = tmp.curr_state;
                     a->next_bro->next_bro = NULL;
                     a->next_bro->f_child = NULL;
                     a->next_bro ->first_bro = first;
+                    a->next_bro->passed = 0;
+
                     a = a->next_bro;
+
+
                 }
 
             } else {
-                if (tmp->curr_state == a->curr_state && tmp->next_state == a->next_state && tmp->move == a->move &&
-                    tmp->toSet == a->toSet && tmp->toGet == a->toGet)
+                if (tmp.curr_state == a->curr_state && tmp.next_state == a->next_state && tmp.move == a->move &&
+                    tmp.toSet == a->toSet && tmp.toGet == a->toGet)
                     flag = 1;
-                first = a;
 
                 while (a->next_bro != NULL) {
-                    if (tmp->curr_state == a->curr_state && tmp->next_state == a->next_state &&
-                        tmp->move == a->move &&
-                        tmp->toSet == a->toSet && tmp->toGet == a->toGet)
+                    if (tmp.curr_state == a->curr_state && tmp.next_state == a->next_state &&
+                        tmp.move == a->move &&
+                        tmp.toSet == a->toSet && tmp.toGet == a->toGet)
                         flag = 1;
 
                     a = a->next_bro;
-                    if (tmp->curr_state == a->curr_state && tmp->next_state == a->next_state &&
-                        tmp->move == a->move &&
-                        tmp->toSet == a->toSet && tmp->toGet == a->toGet)
+                    if (tmp.curr_state == a->curr_state && tmp.next_state == a->next_state &&
+                        tmp.move == a->move &&
+                        tmp.toSet == a->toSet && tmp.toGet == a->toGet)
                         flag = 1;
                 }
                 if (flag == 0) {
                     a->next_bro = ALLOC_TUPLE;
-                    a->next_bro->next_state = tmp->next_state;
-                    a->next_bro->toGet = tmp->toGet;
-                    a->next_bro->toSet = tmp->toSet;
-                    a->next_bro->move = tmp->move;
-                    a->next_bro->curr_state = tmp->curr_state;
+                    a->next_bro->next_state = tmp.next_state;
+                    a->next_bro->toGet = tmp.toGet;
+                    a->next_bro->toSet = tmp.toSet;
+                    a->next_bro->move = tmp.move;
+                    a->next_bro->curr_state = tmp.curr_state;
                     a->next_bro->next_bro = NULL;
                     a->next_bro->f_child = NULL;
-                    a->next_bro ->first_bro = first;
+                    a->next_bro->passed = 0;
                     a = a->next_bro;
 
                 }
@@ -267,70 +266,75 @@ tuple_t *insert_tuple(tuple_t *tmp, tuple_t *pmt, tuple_t *a) {
         }
 
 
-        if (a->next_state == tmp->curr_state) {
+        if (a->next_state == tmp.curr_state) {
             if (a->f_child == NULL) {
 
                 a->f_child = ALLOC_TUPLE;
-                a->f_child->next_state = tmp->next_state;
-                a->f_child->toGet = tmp->toGet;
-                a->f_child->toSet = tmp->toSet;
-                a->f_child->move = tmp->move;
-                a->f_child->curr_state = tmp->curr_state;
+                a->f_child->next_state = tmp.next_state;
+                a->f_child->toGet = tmp.toGet;
+                a->f_child->toSet = tmp.toSet;
+                a->f_child->move = tmp.move;
+                a->f_child->curr_state = tmp.curr_state;
                 a->f_child->next_bro = NULL;
                 a->f_child->f_child = NULL;
                 a -> f_child ->first_bro = a ->f_child;
+                a ->f_child ->passed = 0;
                 a = a->f_child;
+
             } else {
                 a = a->f_child;
-                if (tmp->curr_state != tmp->next_state) {
-                    if (tmp->curr_state == a->curr_state && tmp->next_state == a->next_state &&
-                        tmp->move == a->move &&
-                        tmp->toSet == a->toSet && tmp->toGet == a->toGet)
+                if (tmp.curr_state != tmp.next_state) {
+                    if (tmp.curr_state == a->curr_state && tmp.next_state == a->next_state &&
+                        tmp.move == a->move &&
+                        tmp.toSet == a->toSet && tmp.toGet == a->toGet)
                         flag = 1;
                     first = a;
                     while (a->next_bro != NULL) {
                         a = a->next_bro;
-                        if (tmp->curr_state == a->curr_state && tmp->next_state == a->next_state &&
-                            tmp->move == a->move &&
-                            tmp->toSet == a->toSet && tmp->toGet == a->toGet)
+                        if (tmp.curr_state == a->curr_state && tmp.next_state == a->next_state &&
+                            tmp.move == a->move &&
+                            tmp.toSet == a->toSet && tmp.toGet == a->toGet)
                             flag = 1;
                     }
                     if (flag == 0) {
                         a->next_bro = ALLOC_TUPLE;
-                        a->next_bro->next_state = tmp->next_state;
-                        a->next_bro->toGet = tmp->toGet;
-                        a->next_bro->toSet = tmp->toSet;
-                        a->next_bro->move = tmp->move;
-                        a->next_bro->curr_state = tmp->curr_state;
+                        a->next_bro->next_state = tmp.next_state;
+                        a->next_bro->toGet = tmp.toGet;
+                        a->next_bro->toSet = tmp.toSet;
+                        a->next_bro->move = tmp.move;
+                        a->next_bro->curr_state = tmp.curr_state;
                         a->next_bro->next_bro = NULL;
                         a->next_bro->f_child = NULL;
+                        a->next_bro->passed = 0;
                         a->next_bro ->first_bro = first;
                         a = a->next_bro;
+
                     }
 
                 } else {
-                    if (tmp->curr_state == a->curr_state && tmp->next_state == a->next_state &&
-                        tmp->move == a->move &&
-                        tmp->toSet == a->toSet && tmp->toGet == a->toGet)
+                    if (tmp.curr_state == a->curr_state && tmp.next_state == a->next_state &&
+                        tmp.move == a->move &&
+                        tmp.toSet == a->toSet && tmp.toGet == a->toGet)
                         flag = 1;
                     first = a;
                     while (a->next_bro != NULL) {
-                        if (tmp->curr_state == a->curr_state && tmp->next_state == a->next_state &&
-                            tmp->move == a->move &&
-                            tmp->toSet == a->toSet && tmp->toGet == a->toGet)
+                        if (tmp.curr_state == a->curr_state && tmp.next_state == a->next_state &&
+                            tmp.move == a->move &&
+                            tmp.toSet == a->toSet && tmp.toGet == a->toGet)
                             flag = 1;
                         a = a->next_bro;
 
                     }
                     if (flag == 0) {
                         a->next_bro = ALLOC_TUPLE;
-                        a->next_bro->next_state = tmp->next_state;
-                        a->next_bro->toGet = tmp->toGet;
-                        a->next_bro->toSet = tmp->toSet;
-                        a->next_bro->move = tmp->move;
-                        a->next_bro->curr_state = tmp->curr_state;
+                        a->next_bro->next_state = tmp.next_state;
+                        a->next_bro->toGet = tmp.toGet;
+                        a->next_bro->toSet = tmp.toSet;
+                        a->next_bro->move = tmp.move;
+                        a->next_bro->curr_state = tmp.curr_state;
                         a->next_bro->next_bro = NULL;
                         a->next_bro->f_child = NULL;
+                        a->next_bro->passed = 0;
                         a->next_bro ->first_bro = first;
 
                         a = a->next_bro;
@@ -358,6 +362,7 @@ tuple_t *insert_tuple(tuple_t *tmp, tuple_t *pmt, tuple_t *a) {
 
     return pmt;
 }
+
 
 tuple_t * search(tuple_t *head, int state) {
     tuple_t *tmp;
