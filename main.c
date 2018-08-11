@@ -21,7 +21,6 @@ typedef struct tuple_s  {
     char toSet;
     int move;
     int next_state;
-    int passed;
     struct tuple_s *next_bro;
     struct tuple_s *f_child;
     struct tuple_s *first_bro;
@@ -31,7 +30,7 @@ typedef struct tuple_s  {
 int  check(int acc[], int i);
 void result(int i);
 void clean(tuple_t * root);
-void compute(tuple_t * tmp, char tape[], int i, int acc[], int count);
+void compute(tuple_t ** tmp, char tape[], int i, int count);
 //tuple_t * insert_tail(tuple_t *head, tuple_t *new);
 tuple_t *insert_tuple(tuple_t tmp, tuple_t *pmt, tuple_t *a);
 
@@ -54,7 +53,7 @@ int main(int argc, const char *argv[]) {
     char k;
     char tape[50];
     char blank[30];
-    char input[512];
+    char input[200];
     tuple_t tmp;
     int i = 0;
     tmp.f_child = NULL;
@@ -93,7 +92,6 @@ int main(int argc, const char *argv[]) {
                 list_state[z].toGet = tmp.toGet;
                 list_state[z].toSet = tmp.toSet;
                 list_state[z].move = tmp.move;
-                list_state[z].passed = 0;
                 list_state[z].next_bro = NULL;
                 list_state[z].f_child = NULL;
                 list_state[z].first_bro = NULL;
@@ -118,7 +116,7 @@ int main(int argc, const char *argv[]) {
 
         } else if (strcmp(input, "run") == 0) {
 
-            while(f < 4){
+            while(f < z/7){
                 for(int j = 0; j <z; j++){
                     re_insert_tuple(list_state[j], &root, root);
 
@@ -141,7 +139,7 @@ int main(int argc, const char *argv[]) {
                 tape[i] = '_';
 
 
-            compute(root, tape, 10, acc, 0);
+            compute(&root, tape, 10, 0);
             clean(root);
 
             result(res);
@@ -161,7 +159,7 @@ int main(int argc, const char *argv[]) {
             for (int j = 0; j < 10; j++, i++)
                 tape[i] = '_';
 
-            compute(root, tape, 10, acc, 0);
+            compute(&root, tape, 10, 0);
             clean(root);
 
             result(res);
@@ -196,7 +194,6 @@ tuple_t *insert_tuple(tuple_t tmp, tuple_t *pmt, tuple_t *a) {
         pmt->curr_state = tmp.curr_state;
         pmt->next_bro = NULL;
         pmt->f_child = NULL;
-        pmt->passed =0;
         pmt -> first_bro = pmt;
         inserted = 1;
         return pmt;
@@ -226,7 +223,6 @@ tuple_t *insert_tuple(tuple_t tmp, tuple_t *pmt, tuple_t *a) {
                     a->next_bro->next_bro = NULL;
                     a->next_bro->f_child = NULL;
                     a->next_bro ->first_bro = first;
-                    a->next_bro->passed = 0;
 
                     a = a->next_bro;
 
@@ -260,7 +256,6 @@ tuple_t *insert_tuple(tuple_t tmp, tuple_t *pmt, tuple_t *a) {
                     a->next_bro->curr_state = tmp.curr_state;
                     a->next_bro->next_bro = NULL;
                     a->next_bro->f_child = NULL;
-                    a->next_bro->passed = 0;
                     a = a->next_bro;
                     inserted = 1;
 
@@ -283,7 +278,6 @@ tuple_t *insert_tuple(tuple_t tmp, tuple_t *pmt, tuple_t *a) {
                 a->f_child->next_bro = NULL;
                 a->f_child->f_child = NULL;
                 a -> f_child ->first_bro = a ->f_child;
-                a ->f_child ->passed = 0;
                 a = a->f_child;
                 inserted = 1;
 
@@ -311,7 +305,6 @@ tuple_t *insert_tuple(tuple_t tmp, tuple_t *pmt, tuple_t *a) {
                         a->next_bro->curr_state = tmp.curr_state;
                         a->next_bro->next_bro = NULL;
                         a->next_bro->f_child = NULL;
-                        a->next_bro->passed = 0;
                         a->next_bro ->first_bro = first;
                         a = a->next_bro;
                         inserted = 1;
@@ -341,7 +334,6 @@ tuple_t *insert_tuple(tuple_t tmp, tuple_t *pmt, tuple_t *a) {
                         a->next_bro->curr_state = tmp.curr_state;
                         a->next_bro->next_bro = NULL;
                         a->next_bro->f_child = NULL;
-                        a->next_bro->passed = 0;
                         a->next_bro ->first_bro = first;
                         inserted = 1;
 
@@ -393,17 +385,19 @@ tuple_t * search(tuple_t *head, int state){
     return NULL;
 }
 
-void compute(tuple_t *tmp, char tape[], int i, int acc[], int count) {
+void compute(tuple_t **tmp, char tape[], int i, int count) {
 
 
     char tape_2[50];
-    tuple_t *a;
-
+    tuple_t *a ,*b;
+    int j;
     if(tmp == NULL) {
         res = 0;
         return;
     }
-    for(int j = 0; tape[j] != '\0'; j++)
+
+
+    for(j = 0; tape[j] != '\0'; j++)
         tape_2[j]= tape[j];
 
     if(res == 1 || res == 2 || res == 4 )
@@ -417,21 +411,23 @@ void compute(tuple_t *tmp, char tape[], int i, int acc[], int count) {
 
 
 
-    a = tmp;
-
-    while (a->next_bro != NULL) {
-        compute(a->next_bro, tape, i, acc, count);
-        a = a->next_bro;
-    }
+    a = *tmp;
+    b = *tmp;
 
 
-    if (tape_2[i] == tmp->toGet ) {
-        tape_2[i] = tmp->toSet;
+    if(a->next_bro != NULL)
+        compute(&a->next_bro, tape, i, count);
 
-        i = i + tmp->move;
+
+
+
+    if (tape_2[i] == b->toGet ) {
+        tape_2[i] = b->toSet;
+
+        i = i + b->move;
         count++;
         tot++;
-        if (check(acc, tmp->next_state) == 1 ) {
+        if (check(acc, b->next_state) == 1 ) {
             if(res == 0) {
                 res = 1;
                 return;
@@ -439,12 +435,12 @@ void compute(tuple_t *tmp, char tape[], int i, int acc[], int count) {
             else if(res == 3)
                 res = 2;
         }
-        if (tmp->curr_state == tmp->next_state) {
-                compute(tmp->first_bro, tape_2, i, acc, count);
-
+        if (b->curr_state == b->next_state ) {
+                compute(&b->first_bro, tape_2, i, count);
         }
-        else if (tmp->f_child != NULL)
-            compute(tmp->f_child, tape_2, i, acc, count);
+
+        else if (b->f_child != NULL)
+            compute(&b->f_child, tape_2, i, count);
 
 
     } else
@@ -479,42 +475,9 @@ int check(int acc[], int j) {
     return 0;
 }
 
-/*
-    tuple_t * insert_tail(tuple_t *head, tuple_t *new) {
-
-        tuple_t *tmp;
-        if (head == NULL) {
-            head = ALLOC_TUPLE;
-            head->curr_state = new->curr_state;
-            head->next_state = new->next_state;
-            head->move = new->move;
-            head->toSet = new->toSet;
-            head->toGet = new->toGet;
-            head->next_bro = NULL;
-            head->f_child = NULL;
-            return head;
-        } else {
-            tmp = head;
-            while (tmp->next_bro != NULL)
-                tmp = tmp->next_bro;
-
-            tmp->next_bro = ALLOC_TUPLE;
-            tmp->next_bro->curr_state = new->curr_state;
-            tmp->next_bro->next_state = new->next_state;
-            tmp->next_bro->move = new->move;
-            tmp->next_bro->toSet = new->toSet;
-            tmp->next_bro->toGet = new->toGet;
-            tmp->next_bro->next_bro = NULL;
-            tmp->next_bro->f_child = NULL;
-            return head;
-        }
-    }
-
- */
 
 void clean(tuple_t * root){
-    if(root!= NULL)
-        root -> passed = 0;
+    if(root!= NULL);
     else return;
 
     if(root->f_child == NULL && root->next_bro == NULL)
@@ -527,17 +490,10 @@ void clean(tuple_t * root){
 }
 
 void insert_on_tail(tuple_t tmp, tuple_t ** head){
-    tuple_t * new = ALLOC_TUPLE;
+    tuple_t * new;
+
     tuple_t *b;
-    new->curr_state = tmp.curr_state;
-    new-> next_state = tmp.next_state;
-    new->move= tmp.move;
-    new -> toSet = tmp.toSet;
-    new->toGet = tmp.toGet;
-    new->passed = 0;
-    new->next_bro = NULL;
-    new ->first_bro = NULL;
-    new ->f_child = NULL;
+
 
 
 
@@ -545,6 +501,15 @@ void insert_on_tail(tuple_t tmp, tuple_t ** head){
 
 
     if(a->f_child == NULL) {
+        new= ALLOC_TUPLE;
+        new->curr_state = tmp.curr_state;
+        new-> next_state = tmp.next_state;
+        new->move= tmp.move;
+        new -> toSet = tmp.toSet;
+        new->toGet = tmp.toGet;
+        new->next_bro = NULL;
+        new ->first_bro = NULL;
+        new ->f_child = NULL;
         a->f_child = new;
         a->f_child->first_bro = a->f_child;
         return;
@@ -569,7 +534,15 @@ void insert_on_tail(tuple_t tmp, tuple_t ** head){
         tmp.move == b->move &&
         tmp.toSet == b->toSet && tmp.toGet == b->toGet)
         return;
-
+    new= ALLOC_TUPLE;
+    new->curr_state = tmp.curr_state;
+    new-> next_state = tmp.next_state;
+    new->move= tmp.move;
+    new -> toSet = tmp.toSet;
+    new->toGet = tmp.toGet;
+    new->next_bro = NULL;
+    new ->first_bro = NULL;
+    new ->f_child = NULL;
     b->next_bro = new;
     b->next_bro ->first_bro = a->f_child;
 
