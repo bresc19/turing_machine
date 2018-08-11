@@ -31,14 +31,13 @@ typedef struct tuple_s  {
 int  check(int acc[], int i);
 void result(int i);
 void clean(tuple_t * root);
-void compute(tuple_t * tmp, char tape[], int i, int acc[]);
+void compute(tuple_t * tmp, char tape[], int i, int acc[], int count);
 //tuple_t * insert_tail(tuple_t *head, tuple_t *new);
 tuple_t *insert_tuple(tuple_t tmp, tuple_t *pmt, tuple_t *a);
 
 void re_insert_tuple(tuple_t tmp, tuple_t **pmt, tuple_t *a);
 
-int jump = 0;
-int count=0;
+int tot = 0;
 int max_state = 0;
 int acc[5];
 int max;
@@ -119,9 +118,9 @@ int main(int argc, const char *argv[]) {
 
         } else if (strcmp(input, "run") == 0) {
 
-            while(f < z){
-                for(int i = 0; i <z; i++){
-                    re_insert_tuple(list_state[i], &root, root);
+            while(f < 4){
+                for(int j = 0; j <z; j++){
+                    re_insert_tuple(list_state[j], &root, root);
 
                 }
 
@@ -141,17 +140,14 @@ int main(int argc, const char *argv[]) {
             for (int j = 0; j < 10; j++, i++)
                 tape[i] = '_';
 
-            /*  for(tmp = root; tmp!= NULL; tmp= tmp->next_bro){
-                  root = insert_tuple(tmp, root, root);
-              }*/
-            compute(root, tape, 10, acc);
+
+            compute(root, tape, 10, acc, 0);
             clean(root);
 
             result(res);
             fgets(input, 512, stdin);
             strtok(input, "\n");
             res = 0;
-            count = 0;
 
         } else {
             for (i = 0; i < 10; i++)
@@ -165,17 +161,13 @@ int main(int argc, const char *argv[]) {
             for (int j = 0; j < 10; j++, i++)
                 tape[i] = '_';
 
-            compute(root, tape, 10, acc);
+            compute(root, tape, 10, acc, 0);
             clean(root);
-            // if(count > max  && res == 1)
-            //    printf("U\n");
-            //
-            // else
+
             result(res);
 
 
             res = 0;
-            count = 0;
 
 
             a = fgets(input, 512, stdin);
@@ -401,7 +393,7 @@ tuple_t * search(tuple_t *head, int state){
     return NULL;
 }
 
-void compute(tuple_t *tmp, char tape[], int i, int acc[]) {
+void compute(tuple_t *tmp, char tape[], int i, int acc[], int count) {
 
 
     char tape_2[50];
@@ -423,19 +415,12 @@ void compute(tuple_t *tmp, char tape[], int i, int acc[]) {
         return;
     }
 
-    if(count >= max*20) {
-        if(res == 2)
-            res = 3;
-        else
-            res = 4;
-        return;
-    }
 
 
     a = tmp;
 
     while (a->next_bro != NULL) {
-        compute(a->next_bro, tape, i, acc);
+        compute(a->next_bro, tape, i, acc, count);
         a = a->next_bro;
     }
 
@@ -445,6 +430,7 @@ void compute(tuple_t *tmp, char tape[], int i, int acc[]) {
 
         i = i + tmp->move;
         count++;
+        tot++;
         if (check(acc, tmp->next_state) == 1 ) {
             if(res == 0) {
                 res = 1;
@@ -454,22 +440,12 @@ void compute(tuple_t *tmp, char tape[], int i, int acc[]) {
                 res = 2;
         }
         if (tmp->curr_state == tmp->next_state) {
-            if(tmp->first_bro != NULL)
-                compute(tmp->first_bro, tape_2, i, acc);
+                compute(tmp->first_bro, tape_2, i, acc, count);
 
         }
         else if (tmp->f_child != NULL)
-            compute(tmp->f_child, tape_2, i, acc);
+            compute(tmp->f_child, tape_2, i, acc, count);
 
-        else if(res != 1){
-            a = search(root, tmp->next_state);
-            if (a != NULL) {
-                if (a->passed <= 5) {
-                    a->passed++;
-                    compute(a, tape_2, i, acc);
-                }
-            }
-        }
 
     } else
 
@@ -603,7 +579,7 @@ void insert_on_tail(tuple_t tmp, tuple_t ** head){
 void re_insert_tuple(tuple_t tmp, tuple_t **pmt, tuple_t *a) {
 
 
-    if (a->next_state == tmp.curr_state && !(tmp.curr_state == tmp.next_state && a->curr_state == a->next_state))
+    if (a->next_state == tmp.curr_state && a->curr_state != a->next_state)
         insert_on_tail(tmp, &a);
 
     if (a->next_bro == NULL && a->f_child == NULL)
