@@ -46,7 +46,8 @@ tr
 18 b y L 19
 19 b b L 19
 19 a a L 19
-19 x x L 19 19 _ x R 13
+19 x x L 19 
+19 _ x R 13
 20 y y R 20
 20 c c R 20
 20 x x S 22

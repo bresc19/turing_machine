@@ -33,12 +33,13 @@ void clean(tuple_t * root);
 void compute(tuple_t ** tmp, char tape[], int i, int count);
 //tuple_t * insert_tail(tuple_t *head, tuple_t *new);
 tuple_t *insert_tuple(tuple_t tmp, tuple_t *pmt, tuple_t *a);
+void sort(tuple_t list[]);
+void insertionSort(tuple_t arr[]);
 
 
 
 void re_insert_tuple(tuple_t tmp, tuple_t **pmt, tuple_t *a);
 
-int tot = 0;
 int max_state = 0;
 int acc[5];
 int max = 0 ;
@@ -116,9 +117,9 @@ int main(int argc, const char *argv[]) {
             fscanf(stdin, "%s", input);
 
         } else if (strcmp(input, "run") == 0) {
+            insertionSort(list_state);
 
-
-            while(f < 8){
+            while(f < 6){
                 for(int j = 0; j <z; j++){
                     re_insert_tuple(list_state[j], &root, root);
 
@@ -419,17 +420,15 @@ void compute(tuple_t **tmp, char tape[], int i, int count) {
         i = i + b->move;
         count++;
         if (check(acc, b->next_state) == 1) {
-            if (res == 0) {
                 res = 1;
                 return;
-            } else if (res == 3)
-                res = 2;
+
         }
         if (b->curr_state == b->next_state) {
-            compute(&b->first_bro, tape_2, i, count);
+           return compute(&b->first_bro, tape_2, i, count);
         } else if (b->f_child != NULL)
 
-        compute(&b->f_child, tape_2, i, count);
+       return compute(&b->f_child, tape_2, i, count);
 
 
     } else
@@ -558,4 +557,38 @@ void re_insert_tuple(tuple_t tmp, tuple_t **pmt, tuple_t *a) {
 }
 
 
+void sort(tuple_t list[]){
+    tuple_t tmp;
+    for(int i = 0; i< sizeof(list); i++){
+        for(int j= 1; j< sizeof(list)-1; j++){
+            if(list[j].curr_state < list[i].curr_state) {
+                tmp = list[i];
+                list[i] = list[j];
+                list[j] = tmp;
+            }
+        }
+    }
 
+}
+
+
+void insertionSort(tuple_t arr[])
+{
+    int i, j;
+    tuple_t key;
+    for (i = 1; i < sizeof(arr); i++)
+    {
+        key = arr[i];
+        j = i-1;
+
+        /* Move elements of arr[0..i-1], that are
+           greater than key, to one position ahead
+           of their current position */
+        while (j >= 0 && arr[j].curr_state > key.curr_state)
+        {
+            arr[j+1] = arr[j];
+            j = j-1;
+        }
+        arr[j+1] = key;
+    }
+}
