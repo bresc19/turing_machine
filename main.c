@@ -34,15 +34,16 @@ void compute(tuple_t ** tmp, char tape[], int i, int count);
 //tuple_t * insert_tail(tuple_t *head, tuple_t *new);
 tuple_t *insert_tuple(tuple_t tmp, tuple_t *pmt, tuple_t *a);
 
+
+
 void re_insert_tuple(tuple_t tmp, tuple_t **pmt, tuple_t *a);
 
 int tot = 0;
 int max_state = 0;
 int acc[5];
-int max;
+int max = 0 ;
 int res = 0;
 tuple_t *root = NULL;
-int inserted = 0;
 
 int main(int argc, const char *argv[]) {
 
@@ -77,7 +78,7 @@ int main(int argc, const char *argv[]) {
                 tmp.curr_state = atoi(input);
                 if (max_state < i)
                     max_state = i;
-                fscanf(stdin,  " %s %s %s %d", &tmp.toGet, &tmp.toSet, &k, &tmp.next_state);
+                fscanf(stdin,  " %c %c %c %d", &tmp.toGet, &tmp.toSet, &k, &tmp.next_state);
 
                 if (k == 'R')
                     tmp.move = 1;
@@ -116,7 +117,8 @@ int main(int argc, const char *argv[]) {
 
         } else if (strcmp(input, "run") == 0) {
 
-            while(f < z/7){
+
+            while(f < 8){
                 for(int j = 0; j <z; j++){
                     re_insert_tuple(list_state[j], &root, root);
 
@@ -195,7 +197,6 @@ tuple_t *insert_tuple(tuple_t tmp, tuple_t *pmt, tuple_t *a) {
         pmt->next_bro = NULL;
         pmt->f_child = NULL;
         pmt -> first_bro = pmt;
-        inserted = 1;
         return pmt;
     } else {
         if (a->curr_state == tmp.curr_state) {
@@ -226,8 +227,6 @@ tuple_t *insert_tuple(tuple_t tmp, tuple_t *pmt, tuple_t *a) {
 
                     a = a->next_bro;
 
-                    inserted = 1;
-
                 }
 
             } else {
@@ -257,7 +256,6 @@ tuple_t *insert_tuple(tuple_t tmp, tuple_t *pmt, tuple_t *a) {
                     a->next_bro->next_bro = NULL;
                     a->next_bro->f_child = NULL;
                     a = a->next_bro;
-                    inserted = 1;
 
                 }
 
@@ -279,7 +277,6 @@ tuple_t *insert_tuple(tuple_t tmp, tuple_t *pmt, tuple_t *a) {
                 a->f_child->f_child = NULL;
                 a -> f_child ->first_bro = a ->f_child;
                 a = a->f_child;
-                inserted = 1;
 
             } else {
                 a = a->f_child;
@@ -307,7 +304,6 @@ tuple_t *insert_tuple(tuple_t tmp, tuple_t *pmt, tuple_t *a) {
                         a->next_bro->f_child = NULL;
                         a->next_bro ->first_bro = first;
                         a = a->next_bro;
-                        inserted = 1;
 
                     }
 
@@ -335,7 +331,6 @@ tuple_t *insert_tuple(tuple_t tmp, tuple_t *pmt, tuple_t *a) {
                         a->next_bro->next_bro = NULL;
                         a->next_bro->f_child = NULL;
                         a->next_bro ->first_bro = first;
-                        inserted = 1;
 
                         a = a->next_bro;
                     }
@@ -389,63 +384,55 @@ void compute(tuple_t **tmp, char tape[], int i, int count) {
 
 
     char tape_2[50];
-    tuple_t *a ,*b;
+    tuple_t *a = NULL;
+    tuple_t *b = NULL;
     int j;
-    if(tmp == NULL) {
+    if (tmp == NULL) {
         res = 0;
         return;
     }
 
+    for (j = 0; tape[j] != '\0'; j++)
+        tape_2[j] = tape[j];
 
-    for(j = 0; tape[j] != '\0'; j++)
-        tape_2[j]= tape[j];
-
-    if(res == 1 || res == 2 || res == 4 )
+    if (res == 1 || res == 2 || res == 4)
         return;
 
 
-    if(count >= max){
+    if (count >= max) {
         res = 2;
         return;
     }
 
 
-
     a = *tmp;
     b = *tmp;
 
-
-    if(a->next_bro != NULL)
+    if (a->next_bro != NULL) {
         compute(&a->next_bro, tape, i, count);
+    }
 
 
-
-
-    if (tape_2[i] == b->toGet ) {
+    if (tape_2[i] == b->toGet) {
         tape_2[i] = b->toSet;
 
         i = i + b->move;
         count++;
-        tot++;
-        if (check(acc, b->next_state) == 1 ) {
-            if(res == 0) {
+        if (check(acc, b->next_state) == 1) {
+            if (res == 0) {
                 res = 1;
                 return;
-            }
-            else if(res == 3)
+            } else if (res == 3)
                 res = 2;
         }
-        if (b->curr_state == b->next_state ) {
-                compute(&b->first_bro, tape_2, i, count);
-        }
+        if (b->curr_state == b->next_state) {
+            compute(&b->first_bro, tape_2, i, count);
+        } else if (b->f_child != NULL)
 
-        else if (b->f_child != NULL)
-            compute(&b->f_child, tape_2, i, count);
+        compute(&b->f_child, tape_2, i, count);
 
 
     } else
-
-
         return;
 
     return;
@@ -569,3 +556,6 @@ void re_insert_tuple(tuple_t tmp, tuple_t **pmt, tuple_t *a) {
 
     return;
 }
+
+
+
