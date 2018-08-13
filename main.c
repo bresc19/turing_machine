@@ -10,7 +10,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define ALLOC_TUPLE (tuple_t *)malloc(sizeof(tuple_t))
+#define ALLOC_TUPLE (tuple_t *)calloc(1, sizeof(tuple_t))
 
 
 
@@ -27,6 +27,12 @@ typedef struct tuple_s  {
 }   tuple_t;
 
 
+typedef struct queue_s{
+    tuple_t  info;
+    tuple_t * next;
+};
+
+
 int  check(int acc[], int i);
 void result(int i);
 void clean(tuple_t * root);
@@ -40,6 +46,7 @@ void insertionSort(tuple_t arr[]);
 
 void re_insert_tuple(tuple_t tmp, tuple_t **pmt, tuple_t *a);
 
+int tot = 0;
 int max_state = 0;
 int acc[5];
 int max = 0 ;
@@ -143,6 +150,7 @@ int main(int argc, const char *argv[]) {
 
 
             compute(&root, tape, 10, 0);
+            tot=0;
             clean(root);
 
             result(res);
@@ -163,6 +171,7 @@ int main(int argc, const char *argv[]) {
                 tape[i] = '_';
 
             compute(&root, tape, 10, 0);
+            tot=0;
             clean(root);
 
             result(res);
@@ -383,7 +392,8 @@ tuple_t * search(tuple_t *head, int state){
 
 void compute(tuple_t **tmp, char tape[], int i, int count) {
 
-
+    if (res == 1 || res == 2 || res == 4)
+        return;
     char tape_2[50];
     tuple_t *a = NULL;
     tuple_t *b = NULL;
@@ -396,9 +406,12 @@ void compute(tuple_t **tmp, char tape[], int i, int count) {
     for (j = 0; tape[j] != '\0'; j++)
         tape_2[j] = tape[j];
 
-    if (res == 1 || res == 2 || res == 4)
-        return;
 
+
+    if (tot > 150){
+        res = 2;
+    return;
+        }
 
     if (count >= max) {
         res = 2;
@@ -419,12 +432,14 @@ void compute(tuple_t **tmp, char tape[], int i, int count) {
 
         i = i + b->move;
         count++;
+        tot++;
+
         if (check(acc, b->next_state) == 1) {
                 res = 1;
                 return;
 
         }
-        if (b->curr_state == b->next_state) {
+       else if (b->curr_state == b->next_state) {
            return compute(&b->first_bro, tape_2, i, count);
         } else if (b->f_child != NULL)
 
