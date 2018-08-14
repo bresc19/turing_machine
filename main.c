@@ -34,8 +34,6 @@ typedef struct queue_s{
     int i;
     int count;
 
-    struct queue_s *next;
-
 } queue_t;
 
 
@@ -45,7 +43,6 @@ tuple_t *insert_tuple(tuple_t tmp, tuple_t *pmt, tuple_t *a);
 void Dequeue(tuple_t *tmp, queue_t head[]);
 void Enqueue(tuple_t *tmp, queue_t head[], int count, int i, char string[]);
 void insertionSort(tuple_t arr[]);
-void clean_list(queue_t ** tmp);
 void re_insert_tuple(tuple_t tmp, tuple_t **pmt, tuple_t *a);
 
 int tot = 0;
@@ -128,7 +125,7 @@ int main(int argc, const char *argv[]) {
         } else if (strcmp(input, "run") == 0) {
             insertionSort(list_state);
 
-            while(f < 20){
+            while(f < 10){
                 for(int j = 0; j <z; j++){
                     re_insert_tuple(list_state[j], &root, root);
 
@@ -404,7 +401,7 @@ void compute(tuple_t **tmp, char tape[]) {
     }
 
     while(open[0].i != 0){
-        if(open[0].count >max || tot > 50000) {
+        if(open[0].count >max || tot > 70000) {
             for(j = 0; j< 200; j++)
                 open[j].i = 0;
 
@@ -429,8 +426,12 @@ void compute(tuple_t **tmp, char tape[]) {
             }
             if(open[0].info->next_state == open[0].info->curr_state)
                 b = open[0].info->first_bro;
-            else  b = open[0].info->f_child;
+            else {
+               b = open[0].info->f_child;
+               if(b == NULL)
+                   b = search(root, open[0].info->next_state);
 
+            }
             while(b!= NULL){
                 Enqueue(b, open, open[0].count, open[0].i, open[0].tape);
                 b = b->next_bro;
@@ -580,3 +581,21 @@ void Dequeue(tuple_t *tmp, queue_t head[]){
     }
 }
 
+
+void insert_middle(tuple_t *tmp, queue_t head[], int count, int i, char string[]) {
+
+    int j=0;
+
+    queue_t elem;
+    head[1].i = i;
+    head[j].count = count;
+    head[j].info = tmp;
+    for( int k = 0; string[k] != '\0'; k++)
+        head[j].tape[k] = string[k];
+
+    
+
+    return;
+
+
+}
