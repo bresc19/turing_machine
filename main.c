@@ -404,7 +404,7 @@ void compute(tuple_t **tmp, char tape[]) {
     }
 
     while(open[0].i != 0){
-        if(open[0].count >max || tot > 15000) {
+        if(open[0].count >max || tot > 50000) {
             for(j = 0; j< 200; j++)
                 open[j].i = 0;
 
