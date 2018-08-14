@@ -22,9 +22,6 @@ typedef struct tuple_s  {
     char toSet;
     int move;
     int next_state;
-    char tape[100];
-    int i;
-    int count;
     struct tuple_s *next_bro;
     struct tuple_s *f_child;
     struct tuple_s *first_bro;
@@ -33,7 +30,12 @@ typedef struct tuple_s  {
 
 typedef struct queue_s{
     tuple_t *info;
+    char tape[100];
+    int i;
+    int count;
+
     struct queue_s *next;
+
 } queue_t;
 
 
@@ -45,7 +47,7 @@ void compute(tuple_t **tmp, char tape[]);
 tuple_t *insert_tuple(tuple_t tmp, tuple_t *pmt, tuple_t *a);
 void sort(tuple_t list[]);
 void Dequeue(tuple_t *tmp, queue_t ** head);
-void Enqueue(tuple_t *tmp, queue_t **head, int count, int i);
+void Enqueue(tuple_t *tmp, queue_t **head, int count, int i, char string[]);
 void insertionSort(tuple_t arr[]);
 
 
@@ -396,10 +398,6 @@ tuple_t * search(tuple_t *head, int state){
     return NULL;
 }
 
-void setTape(tuple_t *tmp, char string[]){
-    for(int j = 0; string[j] != '\0'; j++)
-        tmp->tape[j] = string[j];
-}
 
 void compute(tuple_t **tmp, char tape[]) {
 
@@ -411,23 +409,25 @@ void compute(tuple_t **tmp, char tape[]) {
     tuple_t *b;
 
     while(a!= NULL){
-        for(int j = 0; tape[j] != '\0'; j++)
-            a->tape[j] = tape[j];
-        Enqueue(a, &open, 0 , 10);
+        Enqueue(a, &open, 0 , 10, tape);
         a = a->next_bro;
     }
     q = open;
 
     while(open != NULL){
-        if(q->info->count >max) {
+        if(q->count >max) {
             printf("U\n");
             break;
         }
-        if(q ->info->tape[q->info->i] == q->info->toGet){
-            q ->info->tape[q->info->i] = q->info->toSet;
+        if(q ->tape[q->i] == q->info->toGet){
+
+
+            q ->tape[q->i] = q->info->toSet;
             tot++;
-            q->info->count++;
-            q->info ->i = q->info->move + q->info ->i;
+            q->count++;
+            q->i = q->info->move + q->i;
+
+
             if (check(acc, q->info->next_state) == 1) {
                 res = 1;
                 return;
@@ -437,8 +437,7 @@ void compute(tuple_t **tmp, char tape[]) {
             else  b = q->info->f_child;
 
             while(b!= NULL){
-                setTape(b, q->info->tape);
-                Enqueue(b, &open, q->info->count, q->info->i);
+                Enqueue(b, &open, q->count, q->i, q->tape);
                 b = b->next_bro;
             }
         }
@@ -672,7 +671,7 @@ void insertionSort(tuple_t arr[])
     }
 }
 
-void Enqueue(tuple_t *tmp, queue_t **head, int count, int i) {
+void Enqueue(tuple_t *tmp, queue_t **head, int count, int i, char string[]) {
 
     queue_t *new;
 
@@ -683,11 +682,14 @@ void Enqueue(tuple_t *tmp, queue_t **head, int count, int i) {
 
 
 
-    tmp->count = count;
-    tmp->i = i;
+
     if (a == NULL) {
         a = ALLOC_QUEUE;
+        for(int j = 0; string[j] != '\0'; j++)
+            a->tape[j] = string[j];
         a->info = tmp;
+        a->i = i;
+        a->count = count;
         a->next = NULL;
         *head = a;
         return;
@@ -700,7 +702,11 @@ void Enqueue(tuple_t *tmp, queue_t **head, int count, int i) {
 
     b->next = ALLOC_QUEUE;
     b->next->info = tmp;
+    b->next->count = count;
+    b->next->i=i;
     b->next->next = NULL;
+    for(int j = 0; string[j] != '\0'; j++)
+        b->next->tape[j] = string[j];
 
     return;
 }
