@@ -10,8 +10,8 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define ALLOC_TUPLE (tuple_t *)calloc(1, sizeof(tuple_t))
-#define ALLOC_QUEUE (queue_t *) calloc(1, sizeof(queue_t))
+#define ALLOC_TUPLE (tuple_t *)malloc(sizeof(tuple_t))
+#define ALLOC_QUEUE (queue_t *) malloc(sizeof(queue_t))
 
 
 
@@ -128,7 +128,7 @@ int main(int argc, const char *argv[]) {
         } else if (strcmp(input, "run") == 0) {
             insertionSort(list_state);
 
-            while(f < 6){
+            while(f < 10){
                 for(int j = 0; j <z; j++){
                     re_insert_tuple(list_state[j], &root, root);
 
@@ -406,6 +406,11 @@ void compute(tuple_t **tmp, char tape[]) {
 
     while(open != NULL){
         if(q->count >max || tot > 15000) {
+            while(open != NULL) {
+                q = open;
+                open = open ->next;
+                free(q);
+            }
             printf("U\n");
             return;
         }
@@ -419,6 +424,11 @@ void compute(tuple_t **tmp, char tape[]) {
 
 
             if (check(acc, q->info->next_state) == 1) {
+                while(open != NULL) {
+                    q = open;
+                    open = open ->next;
+                    free(q);
+                }
                 printf("1\n");
                 return;
             }
@@ -436,11 +446,6 @@ void compute(tuple_t **tmp, char tape[]) {
         q = open;
 
     }
-
-  clean_list(&open);
-
-
-
 
 printf("0\n");
 
@@ -572,8 +577,6 @@ void insert_on_tail(tuple_t tmp, tuple_t ** head){
     new ->f_child = NULL;
     b->next_bro = new;
     b->next_bro ->first_bro = a->f_child;
-
-    return;
 }
 
 void re_insert_tuple(tuple_t tmp, tuple_t **pmt, tuple_t *a) {
@@ -594,7 +597,6 @@ void re_insert_tuple(tuple_t tmp, tuple_t **pmt, tuple_t *a) {
 
     }
 
-    return;
 }
 
 
@@ -643,8 +645,6 @@ void Enqueue(tuple_t *tmp, queue_t **head, int count, int i, char string[]) {
     b->next->next = NULL;
     for(int j = 0; string[j] != '\0'; j++)
         b->next->tape[j] = string[j];
-
-    return;
 }
 
 
@@ -674,8 +674,3 @@ void Dequeue(tuple_t *tmp, queue_t ** head){
     }
 }
 
-void clean_list(queue_t ** tmp){
-    queue_t * q = * tmp;
-    while(q != NULL)
-        free(q);
-}
