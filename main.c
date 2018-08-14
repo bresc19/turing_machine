@@ -391,8 +391,6 @@ tuple_t * search(tuple_t *head, int state){
 
 void compute(tuple_t **tmp, char tape[]) {
 
-
-
     queue_t *open = NULL;
     tuple_t * a = *tmp;
     queue_t * q;
@@ -448,68 +446,6 @@ void compute(tuple_t **tmp, char tape[]) {
     }
 
 printf("0\n");
-
-
-
-
-    /*if (res == 1 || res == 2 || res == 4)
-        return;
-    char tape_2[50];
-    tuple_t *a = NULL;
-    tuple_t *b = NULL;
-    int j;
-    if (tmp == NULL) {
-        res = 0;
-        return;
-    }
-
-    for (j = 0; tape[j] != '\0'; j++)
-        tape_2[j] = tape[j];
-
-
-
-    if (tot > 150){
-        res = 2;
-    return;
-        }
-
-    if (count >= max) {
-        res = 2;
-        return;
-    }
-
-
-    a = *tmp;
-    b = *tmp;
-
-    if (a->next_bro != NULL) {
-        compute(&a->next_bro, tape, i, count);
-    }
-
-
-    if (tape_2[i] == b->toGet) {
-        tape_2[i] = b->toSet;
-
-        i = i + b->move;
-        count++;
-        tot++;
-
-        if (check(acc, b->next_state) == 1) {
-                res = 1;
-                return;
-
-        }
-       else if (b->curr_state == b->next_state) {
-           return compute(&b->first_bro, tape_2, i, count);
-        } else if (b->f_child != NULL)
-
-       return compute(&b->f_child, tape_2, i, count);
-
-
-    } else
-        return;
-
-    return; */
 
 }
 
