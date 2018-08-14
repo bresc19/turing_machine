@@ -40,18 +40,12 @@ typedef struct queue_s{
 
 
 int  check(int acc[], int j);
-void result(int i);
-void clean(tuple_t * root);
 void compute(tuple_t **tmp, char tape[]);
-//tuple_t * insert_tail(tuple_t *head, tuple_t *new);
 tuple_t *insert_tuple(tuple_t tmp, tuple_t *pmt, tuple_t *a);
-void sort(tuple_t list[]);
 void Dequeue(tuple_t *tmp, queue_t ** head);
 void Enqueue(tuple_t *tmp, queue_t **head, int count, int i, char string[]);
 void insertionSort(tuple_t arr[]);
-
-
-
+void clean_list(queue_t ** tmp);
 void re_insert_tuple(tuple_t tmp, tuple_t **pmt, tuple_t *a);
 
 int tot = 0;
@@ -66,9 +60,9 @@ int main(int argc, const char *argv[]) {
     int f = 0;
     int z = 0;
     char * a;
-    struct tuple_s list_state[100];
+    struct tuple_s list_state[200];
     char k;
-    char tape[50];
+    char tape[100];
     char blank[30];
     char input[200];
     tuple_t tmp;
@@ -159,9 +153,7 @@ int main(int argc, const char *argv[]) {
 
             compute(&root, tape);
             tot=0;
-            clean(root);
 
-            result(res);
             fgets(input, 512, stdin);
             strtok(input, "\n");
             res = 0;
@@ -180,9 +172,7 @@ int main(int argc, const char *argv[]) {
 
             compute(&root, tape);
             tot=0;
-            clean(root);
 
-            result(res);
 
 
             res = 0;
@@ -415,9 +405,9 @@ void compute(tuple_t **tmp, char tape[]) {
     q = open;
 
     while(open != NULL){
-        if(q->count >max) {
+        if(q->count >max || tot > 15000) {
             printf("U\n");
-            break;
+            return;
         }
         if(q ->tape[q->i] == q->info->toGet){
 
@@ -429,7 +419,7 @@ void compute(tuple_t **tmp, char tape[]) {
 
 
             if (check(acc, q->info->next_state) == 1) {
-                res = 1;
+                printf("1\n");
                 return;
             }
             if(q->info->next_state == q->info->curr_state)
@@ -447,12 +437,12 @@ void compute(tuple_t **tmp, char tape[]) {
 
     }
 
+  clean_list(&open);
 
 
 
 
-
-
+printf("0\n");
 
 
 
@@ -518,18 +508,6 @@ void compute(tuple_t **tmp, char tape[]) {
 
 }
 
-
-void result(int i) {
-    if (i == 1)
-        printf("1\n");
-    else if (i == 4 || i == 0 )
-        printf("0\n");
-    else if(res == 2)
-        printf("U\n");
-
-}
-
-
 int check(int acc[], int j) {
     for (int i = 0; i < sizeof(acc); i++) {
         if (acc[i] == 0)
@@ -541,27 +519,10 @@ int check(int acc[], int j) {
     return 0;
 }
 
-
-void clean(tuple_t * root){
-    if(root!= NULL);
-    else return;
-
-    if(root->f_child == NULL && root->next_bro == NULL)
-        return;
-    if(root->next_bro != NULL){
-        clean(root->next_bro);
-    }
-    if(root -> f_child != NULL)
-        clean(root->f_child);
-}
-
 void insert_on_tail(tuple_t tmp, tuple_t ** head){
     tuple_t * new;
 
     tuple_t *b;
-
-
-
 
     tuple_t * a = *head;
 
@@ -637,21 +598,6 @@ void re_insert_tuple(tuple_t tmp, tuple_t **pmt, tuple_t *a) {
 }
 
 
-void sort(tuple_t list[]){
-    tuple_t tmp;
-    for(int i = 0; i< sizeof(list); i++){
-        for(int j= 1; j< sizeof(list)-1; j++){
-            if(list[j].curr_state < list[i].curr_state) {
-                tmp = list[i];
-                list[i] = list[j];
-                list[j] = tmp;
-            }
-        }
-    }
-
-}
-
-
 void insertionSort(tuple_t arr[])
 {
     int i, j;
@@ -673,16 +619,8 @@ void insertionSort(tuple_t arr[])
 
 void Enqueue(tuple_t *tmp, queue_t **head, int count, int i, char string[]) {
 
-    queue_t *new;
-
     queue_t *b;
-
-
     queue_t *a = *head;
-
-
-
-
     if (a == NULL) {
         a = ALLOC_QUEUE;
         for(int j = 0; string[j] != '\0'; j++)
@@ -696,10 +634,8 @@ void Enqueue(tuple_t *tmp, queue_t **head, int count, int i, char string[]) {
     }
 
     b = *head;
-
     while (b->next != NULL)
         b = b->next;
-
     b->next = ALLOC_QUEUE;
     b->next->info = tmp;
     b->next->count = count;
@@ -738,3 +674,8 @@ void Dequeue(tuple_t *tmp, queue_t ** head){
     }
 }
 
+void clean_list(queue_t ** tmp){
+    queue_t * q = * tmp;
+    while(q != NULL)
+        free(q);
+}
