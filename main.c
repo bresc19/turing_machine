@@ -125,7 +125,7 @@ int main(int argc, const char *argv[]) {
         } else if (strcmp(input, "run") == 0) {
             insertionSort(list_state);
 
-            while(f < 7){
+            while(f < 2){
                 for(int j = 0; j <z; j++){
                     re_insert_tuple(list_state[j], &root, root);
 
@@ -390,21 +390,21 @@ void compute(tuple_t **tmp, char tape[]) {
 
     struct queue_s open[200];
     int j;
-    tuple_t * a = *tmp;
+    tuple_t *a = *tmp;
     tuple_t *b;
 
-    for(j = 0; j< 200; j++) {
+    for (j = 0; j < 200; j++) {
         open[j].i = 0;
         open[j].count = 0;
     }
-    while(a!= NULL){
-        Enqueue(a, open, 0 , 10, tape);
+    while (a != NULL) {
+        Enqueue(a, open, 0, 10, tape);
         a = a->next_bro;
     }
 
-    while(open[0].i != 0){
-        if(open[0].count >max || tot > 70000) {
-            for(j = 0; j< 200; j++) {
+    while (open[0].i != 0) {
+        if (open[0].count > max || tot > 70000) {
+            for (j = 0; j < 200; j++) {
                 open[j].i = 0;
                 open[j].count = 0;
 
@@ -412,9 +412,7 @@ void compute(tuple_t **tmp, char tape[]) {
             printf("U\n");
             return;
         }
-        if(open[0].tape[open[0].i] == open[0].info->toGet){
-
-
+        if (open[0].tape[open[0].i] == open[0].info->toGet) {
             open[0].tape[open[0].i] = open[0].info->toSet;
             tot++;
             open[0].count++;
@@ -422,22 +420,22 @@ void compute(tuple_t **tmp, char tape[]) {
 
 
             if (check(acc, open[0].info->next_state) == 1) {
-                for(j = 0; j< 200; j++) {
+                for (j = 0; j < 200; j++) {
                     open[j].i = 0;
                     open[j].count = 0;
                 }
-                    printf("1\n");
+                printf("1\n");
                 return;
             }
-            if(open[0].info->next_state == open[0].info->curr_state)
+            if (open[0].info->next_state == open[0].info->curr_state)
                 b = open[0].info->first_bro;
             else {
-               b = open[0].info->f_child;
-               if(b == NULL)
-                   b = search(root, open[0].info->next_state);
+                b = open[0].info->f_child;
+                if (b == NULL)
+                    b = search(root, open[0].info->next_state);
 
             }
-            while(b!= NULL){
+            while (b != NULL) {
                 Enqueue(b, open, open[0].count, open[0].i, open[0].tape);
                 b = b->next_bro;
             }
@@ -445,10 +443,9 @@ void compute(tuple_t **tmp, char tape[]) {
         Dequeue(open[0].info, open);
 
 
-
     }
 
-printf("0\n");
+    printf("0\n");
 
 }
 
