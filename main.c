@@ -30,7 +30,7 @@ typedef struct tuple_s  {
 
 typedef struct queue_s{
     tuple_t *info;
-    char tape[200];
+    char tape[2000];
     int i;
     int count;
 
@@ -59,7 +59,7 @@ int main(int argc, const char *argv[]) {
     char * a;
     struct tuple_s list_state[200];
     char k;
-    char tape[200];
+    char tape[2000];
     char blank[30];
     char input[200];
     tuple_t tmp;
@@ -125,7 +125,7 @@ int main(int argc, const char *argv[]) {
         } else if (strcmp(input, "run") == 0) {
             insertionSort(list_state);
 
-            while(f < 2){
+            while(f < 6){
                 for(int j = 0; j <z; j++){
                     re_insert_tuple(list_state[j], &root, root);
 
@@ -135,7 +135,7 @@ int main(int argc, const char *argv[]) {
             }
 
 
-            for (i = 0; i < 10; i++)
+            for (i = 0; i < 500; i++)
                 tape[i] = '_';
             a =  fgets(blank, 512, stdin);
             a =  fgets(blank, 512, stdin);
@@ -144,7 +144,7 @@ int main(int argc, const char *argv[]) {
             for (int j = 0; blank[j] != '\0'; j++, i++)
                 tape[i] = blank[j];
 
-            for (int j = 0; j < 10; j++, i++)
+            for (int j = 0; j <1000; j++, i++)
                 tape[i] = '_';
 
 
@@ -156,7 +156,7 @@ int main(int argc, const char *argv[]) {
             res = 0;
 
         } else {
-            for (i = 0; i < 10; i++)
+            for (i = 0; i < 500; i++)
                 tape[i] = '_';
             for (int j = 0; input[j] != '\0'; j++, i++) {
                 if (input[j] == '\n')
@@ -164,7 +164,7 @@ int main(int argc, const char *argv[]) {
                 tape[i] = input[j];
             }
 
-            for (int j = 0; j < 10; j++, i++)
+            for (int j = 0; j < 1000; j++, i++)
                 tape[i] = '_';
 
             compute(&root, tape);
@@ -388,7 +388,7 @@ tuple_t * search(tuple_t *head, int state){
 
 void compute(tuple_t **tmp, char tape[]) {
 
-    struct queue_s open[200];
+    struct queue_s open[2000];
     int j;
     tuple_t *a = *tmp;
     tuple_t *b;
@@ -398,12 +398,12 @@ void compute(tuple_t **tmp, char tape[]) {
         open[j].count = 0;
     }
     while (a != NULL) {
-        Enqueue(a, open, 0, 10, tape);
+        Enqueue(a, open, 0, 500, tape);
         a = a->next_bro;
     }
 
     while (open[0].i != 0) {
-        if (open[0].count > max || tot > 70000) {
+        if (open[0].count > max || tot > 100000) {
             for (j = 0; j < 200; j++) {
                 open[j].i = 0;
                 open[j].count = 0;
@@ -412,6 +412,8 @@ void compute(tuple_t **tmp, char tape[]) {
             printf("U\n");
             return;
         }
+        if(tot == 150)
+            tot = tot;
         if (open[0].tape[open[0].i] == open[0].info->toGet) {
             open[0].tape[open[0].i] = open[0].info->toSet;
             tot++;
@@ -581,6 +583,8 @@ void Dequeue(tuple_t *tmp, queue_t head[]){
     for(k = 0; head[k].i != 0; k++) {
         head[k] = head[k + 1];
     }
+
+    head[k+1].i = 0;
 }
 
 
@@ -601,3 +605,5 @@ void insert_middle(tuple_t *tmp, queue_t head[], int count, int i, char string[]
 
 
 }
+
+
