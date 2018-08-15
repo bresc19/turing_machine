@@ -30,7 +30,7 @@ typedef struct tuple_s  {
 
 typedef struct queue_s{
     tuple_t *info;
-    char tape[2000];
+    char tape[2500];
     int i;
     int count;
 
@@ -135,7 +135,7 @@ int main(int argc, const char *argv[]) {
             }
 
 
-            for (i = 0; i < 500; i++)
+            for (i = 0; i < 1100; i++)
                 tape[i] = '_';
             a =  fgets(blank, 512, stdin);
             a =  fgets(blank, 512, stdin);
@@ -144,7 +144,7 @@ int main(int argc, const char *argv[]) {
             for (int j = 0; blank[j] != '\0'; j++, i++)
                 tape[i] = blank[j];
 
-            for (int j = 0; j <1000; j++, i++)
+            for (int j = 0; j <900; j++, i++)
                 tape[i] = '_';
 
 
@@ -156,7 +156,7 @@ int main(int argc, const char *argv[]) {
             res = 0;
 
         } else {
-            for (i = 0; i < 500; i++)
+            for (i = 0; i < 1100; i++)
                 tape[i] = '_';
             for (int j = 0; input[j] != '\0'; j++, i++) {
                 if (input[j] == '\n')
@@ -164,7 +164,7 @@ int main(int argc, const char *argv[]) {
                 tape[i] = input[j];
             }
 
-            for (int j = 0; j < 1000; j++, i++)
+            for (int j = 0; j < 900; j++, i++)
                 tape[i] = '_';
 
             compute(&root, tape);
@@ -388,7 +388,7 @@ tuple_t * search(tuple_t *head, int state){
 
 void compute(tuple_t **tmp, char tape[]) {
 
-    struct queue_s open[2000];
+    struct queue_s open[2500];
     int j;
     tuple_t *a = *tmp;
     tuple_t *b;
@@ -398,7 +398,7 @@ void compute(tuple_t **tmp, char tape[]) {
         open[j].count = 0;
     }
     while (a != NULL) {
-        Enqueue(a, open, 0, 500, tape);
+        Enqueue(a, open, 0, 1100, tape);
         a = a->next_bro;
     }
 
