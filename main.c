@@ -30,7 +30,7 @@ typedef struct tuple_s  {
 
 typedef struct queue_s{
     tuple_t *info;
-    char tape[100];
+    char tape[200];
     int i;
     int count;
 
@@ -59,7 +59,7 @@ int main(int argc, const char *argv[]) {
     char * a;
     struct tuple_s list_state[200];
     char k;
-    char tape[100];
+    char tape[200];
     char blank[30];
     char input[200];
     tuple_t tmp;
@@ -125,7 +125,7 @@ int main(int argc, const char *argv[]) {
         } else if (strcmp(input, "run") == 0) {
             insertionSort(list_state);
 
-            while(f < 10){
+            while(f < 7){
                 for(int j = 0; j <z; j++){
                     re_insert_tuple(list_state[j], &root, root);
 
@@ -393,8 +393,10 @@ void compute(tuple_t **tmp, char tape[]) {
     tuple_t * a = *tmp;
     tuple_t *b;
 
-    for(j = 0; j< 200; j++)
+    for(j = 0; j< 200; j++) {
         open[j].i = 0;
+        open[j].count = 0;
+    }
     while(a!= NULL){
         Enqueue(a, open, 0 , 10, tape);
         a = a->next_bro;
@@ -402,9 +404,11 @@ void compute(tuple_t **tmp, char tape[]) {
 
     while(open[0].i != 0){
         if(open[0].count >max || tot > 70000) {
-            for(j = 0; j< 200; j++)
+            for(j = 0; j< 200; j++) {
                 open[j].i = 0;
+                open[j].count = 0;
 
+            }
             printf("U\n");
             return;
         }
@@ -418,10 +422,11 @@ void compute(tuple_t **tmp, char tape[]) {
 
 
             if (check(acc, open[0].info->next_state) == 1) {
-                for(j = 0; j< 200; j++)
+                for(j = 0; j< 200; j++) {
                     open[j].i = 0;
-
-                printf("1\n");
+                    open[j].count = 0;
+                }
+                    printf("1\n");
                 return;
             }
             if(open[0].info->next_state == open[0].info->curr_state)
