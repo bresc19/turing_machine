@@ -49,19 +49,33 @@ int tot = 0;
 int max_state = 0;
 int acc[5];
 int max = 0 ;
-int res = 0;
 tuple_t *root = NULL;
+
+void insert_ord(tuple_t array[], tuple_t tmp) {
+
+    int i, j;
+
+    i = 0;
+    while(i<5000 && array[i].curr_state < tmp.curr_state && array[i].curr_state != -1)
+        i++;
+
+    for(j=4999; j>=i;j--)
+        array[j+1]=array[j];
+
+    array[i]=tmp;
+
+}
 
 int main(int argc, const char *argv[]) {
 
     int f = 0;
     int z = 0;
     char * a;
-    struct tuple_s list_state[200];
+    struct tuple_s list_state[5000];
     char k;
     char tape[2500];
-    char blank[30];
-    char input[200];
+    char blank[300];
+    char input[1024];
     tuple_t tmp;
     int i = 0;
     tmp.f_child = NULL;
@@ -70,8 +84,11 @@ int main(int argc, const char *argv[]) {
 
     a = fgets(input, 512, stdin);
 
+    for(int i = 0; i< 5000; i++)
+        list_state[i].curr_state = -1;
     for (int i = 0; i < 9; i++)
         blank[i] = '_';
+
 
     while (a != NULL) {
         strtok(input, "\n");
@@ -95,6 +112,8 @@ int main(int argc, const char *argv[]) {
                     tmp.move = 0;
 
 
+                insert_ord(list_state, tmp);
+/*
                 list_state[z].curr_state = tmp.curr_state;
                 list_state[z].next_state = tmp.next_state;
                 list_state[z].toGet = tmp.toGet;
@@ -103,10 +122,9 @@ int main(int argc, const char *argv[]) {
                 list_state[z].next_bro = NULL;
                 list_state[z].f_child = NULL;
                 list_state[z].first_bro = NULL;
-                //  list_state = insert_tail(list_state, tmp);
 
+*/
 
-                root = insert_tuple(tmp, root, root);
 
                 fscanf(stdin, "%s", input);
                 z++;
@@ -123,18 +141,12 @@ int main(int argc, const char *argv[]) {
             fscanf(stdin, "%s", input);
 
         } else if (strcmp(input, "run") == 0) {
-            insertionSort(list_state);
-            insertionSort(list_state);
-            insertionSort(list_state);
 
-            while(f < 10){
-                for(int j = 0; j <z; j++){
-                    re_insert_tuple(list_state[j], &root, root);
-                    tot = 0;
-                }
+            for(int i = 0; i< z; i++)
+                root = insert_tuple(list_state[i], root, root);
 
-                f++;
-            }
+
+
 
 
             for (i = 0; i < 1100; i++)
@@ -155,7 +167,6 @@ int main(int argc, const char *argv[]) {
 
             fgets(input, 512, stdin);
             strtok(input, "\n");
-            res = 0;
 
         } else {
             for (i = 0; i < 1100; i++)
@@ -171,10 +182,6 @@ int main(int argc, const char *argv[]) {
 
             compute(&root, tape);
             tot=0;
-
-
-
-            res = 0;
 
 
             a = fgets(input, 512, stdin);
@@ -524,7 +531,7 @@ void insert_on_tail(tuple_t tmp, tuple_t ** head){
 void re_insert_tuple(tuple_t tmp, tuple_t **pmt, tuple_t *a) {
 
 
-if(tot > 500000)
+if(tot > 1000)
     return;
     if (a->next_state == tmp.curr_state && a->curr_state != a->next_state)
         insert_on_tail(tmp, &a);
