@@ -40,7 +40,7 @@ typedef struct queue_s{
 int  check(int acc[], int j);
 void compute(tuple_t **tmp, char tape[]);
 tuple_t *insert_tuple(tuple_t tmp, tuple_t *pmt, tuple_t *a);
-void Dequeue(tuple_t *tmp, queue_t head[]);
+void Dequeue(queue_t head[]);
 void Enqueue(tuple_t *tmp, queue_t head[], int count, int i, char string[]);
 void insertionSort(tuple_t arr[]);
 void re_insert_tuple(tuple_t tmp, tuple_t **pmt, tuple_t *a);
@@ -59,7 +59,7 @@ int main(int argc, const char *argv[]) {
     char * a;
     struct tuple_s list_state[200];
     char k;
-    char tape[2000];
+    char tape[2500];
     char blank[30];
     char input[200];
     tuple_t tmp;
@@ -412,7 +412,7 @@ void compute(tuple_t **tmp, char tape[]) {
             printf("U\n");
             return;
         }
-        if(tot == 150)
+        if(tot == 800)
             tot = tot;
         if (open[0].tape[open[0].i] == open[0].info->toGet) {
             open[0].tape[open[0].i] = open[0].info->toSet;
@@ -442,7 +442,7 @@ void compute(tuple_t **tmp, char tape[]) {
                 b = b->next_bro;
             }
         }
-        Dequeue(open[0].info, open);
+        Dequeue(open);
 
 
     }
@@ -562,8 +562,9 @@ void Enqueue(tuple_t *tmp, queue_t head[], int count, int i, char string[]) {
 
     int j=0;
 
-    while(head[j].i !=0)
+    while(head[j].i !=0 ) {
         j++;
+    }
     head[j].i = i;
     head[j].count = count;
     head[j].info = tmp;
@@ -576,7 +577,7 @@ void Enqueue(tuple_t *tmp, queue_t head[], int count, int i, char string[]) {
 }
 
 
-void Dequeue(tuple_t *tmp, queue_t head[]){
+void Dequeue(queue_t head[]){
 
     int k;
 
@@ -585,24 +586,8 @@ void Dequeue(tuple_t *tmp, queue_t head[]){
     }
 
     head[k+1].i = 0;
-}
-
-
-void insert_middle(tuple_t *tmp, queue_t head[], int count, int i, char string[]) {
-
-    int j=0;
-
-    queue_t elem;
-    head[1].i = i;
-    head[j].count = count;
-    head[j].info = tmp;
-    for( int k = 0; string[k] != '\0'; k++)
-        head[j].tape[k] = string[k];
-
-    
-
-    return;
-
+    head[k+1].info = NULL;
+    head[k+1].count = 0;
 
 }
 
