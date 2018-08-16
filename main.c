@@ -124,8 +124,10 @@ int main(int argc, const char *argv[]) {
 
         } else if (strcmp(input, "run") == 0) {
             insertionSort(list_state);
+            insertionSort(list_state);
+            insertionSort(list_state);
 
-            while(f < 6){
+            while(f < 10){
                 for(int j = 0; j <z; j++){
                     re_insert_tuple(list_state[j], &root, root);
 
@@ -412,7 +414,7 @@ void compute(tuple_t **tmp, char tape[]) {
             printf("U\n");
             return;
         }
-        if(tot == 800)
+        if(tot == 850)
             tot = tot;
         if (open[0].tape[open[0].i] == open[0].info->toGet) {
             open[0].tape[open[0].i] = open[0].info->toSet;
@@ -441,6 +443,7 @@ void compute(tuple_t **tmp, char tape[]) {
                 Enqueue(b, open, open[0].count, open[0].i, open[0].tape);
                 b = b->next_bro;
             }
+
         }
         Dequeue(open);
 
