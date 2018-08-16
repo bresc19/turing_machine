@@ -130,7 +130,7 @@ int main(int argc, const char *argv[]) {
             while(f < 10){
                 for(int j = 0; j <z; j++){
                     re_insert_tuple(list_state[j], &root, root);
-
+                    tot = 0;
                 }
 
                 f++;
@@ -524,6 +524,8 @@ void insert_on_tail(tuple_t tmp, tuple_t ** head){
 void re_insert_tuple(tuple_t tmp, tuple_t **pmt, tuple_t *a) {
 
 
+if(tot > 500000)
+    return;
     if (a->next_state == tmp.curr_state && a->curr_state != a->next_state)
         insert_on_tail(tmp, &a);
 
@@ -531,10 +533,12 @@ void re_insert_tuple(tuple_t tmp, tuple_t **pmt, tuple_t *a) {
         return;
 
     if (a->next_bro != NULL) {
+        tot++;
         re_insert_tuple(tmp, pmt, a->next_bro);
     }
 
     if (a->f_child != NULL) {
+        tot++;
        re_insert_tuple(tmp, pmt, a->f_child);
 
     }
