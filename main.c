@@ -630,7 +630,8 @@ void Enqueue(tuple_t *tmp, queue_t **head, int count, int i, const char string[]
         for (j = 1; string[j]!= '\0' ; j++)
             b->next->tape[j] = string[j];
         b->next->tape[j] = '\0';
-        b->next ->i = 0;
+        if(i <0)
+            b->next ->i = 0;
     } else if (string[len - 1] != '_') {
         len = len + 1;
         b->next->tape = (char *) malloc((len) * sizeof(char));
