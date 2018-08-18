@@ -150,6 +150,8 @@ int main(int argc, const char *argv[]) {
             tape[i]= '\0';
 
             compute(&root, tape);
+            memset(tape, 0, sizeof(tape));
+
             tot=0;
 
             fgets(input, 1024, stdin);
@@ -169,6 +171,7 @@ int main(int argc, const char *argv[]) {
 
             compute(&root, tape);
             tot=0;
+            memset(tape, 0, sizeof(tape));
 
 
             a = fgets(input, 512, stdin);
@@ -235,6 +238,8 @@ tuple_t *insert_tuple(tuple_t tmp, tuple_t *pmt, tuple_t *a) {
                     tmp.toSet == a->toSet && tmp.toGet == a->toGet)
                     flag = 1;
 
+                first = a;
+
                 while (a->next_bro != NULL) {
                     if (tmp.curr_state == a->curr_state && tmp.next_state == a->next_state &&
                         tmp.move == a->move &&
@@ -249,6 +254,7 @@ tuple_t *insert_tuple(tuple_t tmp, tuple_t *pmt, tuple_t *a) {
                 }
                 if (flag == 0) {
                     a->next_bro = ALLOC_TUPLE;
+                    a->next_bro ->first_bro = first;
                     a->next_bro->next_state = tmp.next_state;
                     a->next_bro->toGet = tmp.toGet;
                     a->next_bro->toSet = tmp.toSet;
@@ -362,7 +368,8 @@ tuple_t *insert_tuple(tuple_t tmp, tuple_t *pmt, tuple_t *a) {
 tuple_t * search(tuple_t *head, int state){
     tuple_t *tmp;
 
-
+    if(state == 0 && head ->curr_state == 0  && head -> f_child != NULL && head->next_bro != NULL)
+        return head;
     if(state == head ->next_state && head -> f_child != NULL){
         return head->f_child;
 
@@ -582,6 +589,8 @@ void Enqueue(tuple_t *tmp, queue_t **head, int count, int i, const char string[]
             for (j = 1; string[j]!= '\0' ; j++)
                 a->tape[j] = string[j];
             a->tape[j] = '\0';
+            a ->i = 0;
+
         } else if (string[len - 1] != '_') {
             len = len + 1;
             a->tape = (char *) malloc((len) * sizeof(char));
@@ -621,6 +630,7 @@ void Enqueue(tuple_t *tmp, queue_t **head, int count, int i, const char string[]
         for (j = 1; string[j]!= '\0' ; j++)
             b->next->tape[j] = string[j];
         b->next->tape[j] = '\0';
+        b->next ->i = 0;
     } else if (string[len - 1] != '_') {
         len = len + 1;
         b->next->tape = (char *) malloc((len) * sizeof(char));
@@ -629,7 +639,8 @@ void Enqueue(tuple_t *tmp, queue_t **head, int count, int i, const char string[]
         b->next->tape[j] = '_';
         b->next->tape[j+1] = '\0';
 
-    } else {
+    }
+    else {
         b->next->tape = (char *) malloc((len) * sizeof(char));
         for (j = 0; string[j] != '\0'; j++) {
             b->next->tape[j] = string[j];
