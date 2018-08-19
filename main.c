@@ -117,8 +117,6 @@ int main(int argc, const char *argv[]) {
                 root = insert_tuple(p->info, root, root);
             }
 
-           
-
             while(list_state != NULL){
                 p = list_state;
                 list_state = list_state ->next;
@@ -424,11 +422,11 @@ void compute(tuple_t **tmp, char tape[]) {
 
 
             if (check(acc, open->info->next_state) == 1) {
-                    while(open != NULL) {
-                        q = open;
-                        open = open ->next;
-                        free(q);
-                    }
+                while(open != NULL) {
+                    q = open;
+                    open = open ->next;
+                    free(q);
+                }
                 printf("1\n");
                 return;
             }
