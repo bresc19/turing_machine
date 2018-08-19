@@ -117,6 +117,8 @@ int main(int argc, const char *argv[]) {
                 root = insert_tuple(p->info, root, root);
             }
 
+           
+
             while(list_state != NULL){
                 p = list_state;
                 list_state = list_state ->next;
@@ -644,6 +646,7 @@ void Dequeue(queue_t ** head) {
 
     a = b;
     *head = b->next;
+    free(a->tape);
     free(a);
 
 }
