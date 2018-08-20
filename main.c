@@ -49,7 +49,7 @@ typedef struct list_tuple_s{
 int  check(int acc[], int j);
 void compute(tuple_t **tmp, char tape[]);
 tuple_t *insert_tuple(tuple_t tmp, tuple_t *pmt, tuple_t *a);
-void Dequeue(queue_t ** head);
+queue_t * Dequeue(queue_t ** head);
 void Enqueue(tuple_t *tmp, queue_t **head, int count, int i, const char string[], int len);
 
 void re_insert_tuple(tuple_t tmp, tuple_t **pmt, tuple_t *a);
@@ -60,8 +60,7 @@ int length(char string[]);
 void insert_order(tuple_t tmp, list_tuple_t ** head);
 
 int tot = 0;
-int max_state = 0;
-int acc[5];
+int acc[20];
 int max = 0 ;
 tuple_t *root = NULL;
 
@@ -72,15 +71,15 @@ int main(int argc, const char *argv[]) {
     list_tuple_t *p;
     list_tuple_t *list_state = NULL;
     char k;
-    char tape[2048];
-    char input[1024];
+    char tape[1024];
+    char input[2048];
     tuple_t tmp;
     int i = 0;
     tmp.f_child = NULL;
     tmp.next_bro = NULL;
     tmp.first_bro = NULL;
 
-    a = fgets(input, 512, stdin);
+    a = fgets(input, 2048, stdin);
 
 
     while (a != NULL) {
@@ -93,8 +92,7 @@ int main(int argc, const char *argv[]) {
             while (strcmp(input, "acc") != 0) {
 
                 tmp.curr_state = atoi(input);
-                if (max_state < i)
-                    max_state = i;
+
                 fscanf(stdin,  " %c %c %c %d", &tmp.toGet, &tmp.toSet, &k, &tmp.next_state);
 
                 if (k == 'R')
@@ -136,8 +134,8 @@ int main(int argc, const char *argv[]) {
 
             for (i = 0; i < 1; i++)
                 tape[i] = '_';
-            a =  fgets(input, 512, stdin);
-            a =  fgets(input, 512, stdin);
+            a =  fgets(input, 2048, stdin);
+            a =  fgets(input, 2048, stdin);
 
             strtok(input, "\n");
             for (int j = 0; input[j] != '\0'; j++, i++)
@@ -149,11 +147,10 @@ int main(int argc, const char *argv[]) {
             tape[i]= '\0';
 
             compute(&root, tape);
-            memset(tape, 0, sizeof(tape));
 
             tot=0;
 
-            fgets(input, 1024, stdin);
+            fgets(input, 2048, stdin);
             strtok(input, "\n");
 
         } else {
@@ -173,7 +170,7 @@ int main(int argc, const char *argv[]) {
             memset(tape, 0, sizeof(tape));
 
 
-            a = fgets(input, 512, stdin);
+            a = fgets(input, 970, stdin);
             strtok(input, "\n");
         }
 
@@ -393,14 +390,16 @@ tuple_t * search(tuple_t *head, int state){
 void compute(tuple_t **tmp, char tape[]) {
 
     struct queue_s *open = NULL;
-    queue_t * q;
     int j;
+    queue_t * q;
     tuple_t *a = *tmp;
     tuple_t *b;
 
 
+
     while (a != NULL) {
-        Enqueue(a, &open, 0, 1, tape, length(tape));
+        if (tape[1] == a->toGet)
+            Enqueue(a, &open, 0, 1, tape, length(tape));
         a = a->next_bro;
     }
 
@@ -436,11 +435,12 @@ void compute(tuple_t **tmp, char tape[]) {
                 b = open->info->f_child;
                 if (b == NULL) {
                     b = search(root, open->info->next_state);
-                    tot++;
                 }
             }
+            j = length(open->tape);
             while (b != NULL) {
-                Enqueue(b, &open, open->count, open->i, open->tape, length(open->tape));
+                if (open->tape[open->i] == b->toGet|| open->tape[0] != '_' || open->tape[j-1] != '_' )
+                    Enqueue(b, &open, open->count, open->i, open->tape, j);
                 b = b->next_bro;
             }
 
@@ -554,7 +554,7 @@ void Enqueue(tuple_t *tmp, queue_t **head, int count, int i, const char string[]
     int j = 0;
     int y= 0;
 
-    if (a == NULL) {
+    if (a == NULL ) {
         a = ALLOC_QUEUE;
 
         a->info = tmp;
@@ -639,13 +639,16 @@ void Enqueue(tuple_t *tmp, queue_t **head, int count, int i, const char string[]
 
 void Dequeue(queue_t ** head) {
 
+
     queue_t *b = *head;
     queue_t *a;
-
     a = b;
     *head = b->next;
     free(a->tape);
+
+
     free(a);
+
 
 }
 
