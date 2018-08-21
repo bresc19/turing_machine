@@ -49,7 +49,7 @@ typedef struct list_tuple_s{
 int  check(int acc[], int j);
 void compute(tuple_t **tmp, char tape[]);
 tuple_t *insert_tuple(tuple_t tmp, tuple_t *pmt, tuple_t *a);
-queue_t * Dequeue(queue_t ** head);
+void Dequeue(queue_t ** head);
 void Enqueue(tuple_t *tmp, queue_t **head, int count, int i, const char string[], int len);
 
 void re_insert_tuple(tuple_t tmp, tuple_t **pmt, tuple_t *a);
@@ -60,9 +60,11 @@ int length(char string[]);
 void insert_order(tuple_t tmp, list_tuple_t ** head);
 
 int tot = 0;
+int max_state = 0;
 int acc[20];
 int max = 0 ;
 tuple_t *root = NULL;
+queue_t * b= NULL;
 
 int main(int argc, const char *argv[]) {
 
@@ -79,7 +81,7 @@ int main(int argc, const char *argv[]) {
     tmp.next_bro = NULL;
     tmp.first_bro = NULL;
 
-    a = fgets(input, 2048, stdin);
+    a = fgets(input, 512, stdin);
 
 
     while (a != NULL) {
@@ -170,7 +172,7 @@ int main(int argc, const char *argv[]) {
             memset(tape, 0, sizeof(tape));
 
 
-            a = fgets(input, 970, stdin);
+            a = fgets(input, 2048, stdin);
             strtok(input, "\n");
         }
 
@@ -389,12 +391,12 @@ tuple_t * search(tuple_t *head, int state){
 
 void compute(tuple_t **tmp, char tape[]) {
 
+
     struct queue_s *open = NULL;
     int j;
     queue_t * q;
     tuple_t *a = *tmp;
     tuple_t *b;
-
 
 
     while (a != NULL) {
@@ -404,7 +406,9 @@ void compute(tuple_t **tmp, char tape[]) {
     }
 
     while (open != NULL) {
-        if (open->count > max) {
+
+
+        if (open->count > max ) {
             while(open != NULL) {
                 q = open;
                 open = open ->next;
@@ -417,6 +421,7 @@ void compute(tuple_t **tmp, char tape[]) {
         if (open->tape[open->i] == open->info->toGet) {
             open->tape[open->i] = open->info->toSet;
             open->count++;
+            tot++;
             open->i = open->info->move + open->i;
 
 
@@ -446,7 +451,6 @@ void compute(tuple_t **tmp, char tape[]) {
 
         }
         Dequeue(&open);
-
 
     }
 
@@ -549,7 +553,6 @@ void re_insert_tuple(tuple_t tmp, tuple_t **pmt, tuple_t *a) {
 void Enqueue(tuple_t *tmp, queue_t **head, int count, int i, const char string[], int len) {
 
 
-    queue_t *b;
     queue_t *a = *head;
     int j = 0;
     int y= 0;
@@ -593,12 +596,11 @@ void Enqueue(tuple_t *tmp, queue_t **head, int count, int i, const char string[]
         }
 
         *head = a;
+        b = a;
         return;
     }
 
-    b = *head;
-    while (b->next != NULL)
-        b = b->next;
+
     b->next = ALLOC_QUEUE;
     b->next->info = tmp;
     b->next->tape = NULL;
@@ -634,21 +636,18 @@ void Enqueue(tuple_t *tmp, queue_t **head, int count, int i, const char string[]
         }
         b->next->tape[len]= '\0';
     }
-
+    b = b->next;
 }
 
 void Dequeue(queue_t ** head) {
 
-
     queue_t *b = *head;
     queue_t *a;
+
     a = b;
     *head = b->next;
     free(a->tape);
-
-
     free(a);
-
 
 }
 
