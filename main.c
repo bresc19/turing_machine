@@ -33,7 +33,7 @@ typedef struct tuple_s  {
 
 typedef struct queue_s{
     tuple_t *info;
-    char tape[3000];
+    char *tape;
     int i;
     int count;
 
@@ -574,11 +574,11 @@ void Enqueue(tuple_t *tmp, queue_t **head, int count, int i, const char string[]
         a->i = i;
         a->count = count;
         a->next = NULL;
-       // a->tape = NULL;
+        a->tape = NULL;
         if (string[0] != '_') {
             len = len + 1;
 
-          //  a->tape = (char *) malloc((len + 1) * sizeof(char));
+            a->tape = (char *) malloc((len + 1) * sizeof(char));
 
             a->tape[0] = '_';
 
@@ -589,7 +589,7 @@ void Enqueue(tuple_t *tmp, queue_t **head, int count, int i, const char string[]
 
         } else if (string[len - 1] != '_') {
             len = len + 1;
-           // a->tape = (char *) malloc((len + 1) * sizeof(char));
+            a->tape = (char *) malloc((len + 1) * sizeof(char));
 
             for (j = 0; string[j] != '\0'; j++)
                 a->tape[j] = string[j];
@@ -597,7 +597,7 @@ void Enqueue(tuple_t *tmp, queue_t **head, int count, int i, const char string[]
             a->tape[j + 1] = '\0';
 
         } else {
-          //  a->tape = (char *) malloc((len + 1) * sizeof(char));
+            a->tape = (char *) malloc((len + 1) * sizeof(char));
 
 
             for (j = 0; string[j] != '\0'; j++) {
@@ -617,7 +617,7 @@ void Enqueue(tuple_t *tmp, queue_t **head, int count, int i, const char string[]
     if (used == NULL) {
         b->next = ALLOC_QUEUE;
         b->next->info = tmp;
-     //   b->next->tape = NULL;
+        b->next->tape = NULL;
         b->next->count = count;
         b->next->i = i;
         b->next->next = NULL;
@@ -633,7 +633,7 @@ void Enqueue(tuple_t *tmp, queue_t **head, int count, int i, const char string[]
     }
         if (string[0] != '_') {
             len = len + 1;
-    //        b->next->tape = (char *) malloc((len + 1) * sizeof(char));
+            b->next->tape = (char *) malloc((len + 1) * sizeof(char));
 
             b->next->tape[0] = '_';
 
@@ -645,7 +645,7 @@ void Enqueue(tuple_t *tmp, queue_t **head, int count, int i, const char string[]
         } else if (string[len - 1] != '_') {
             len = len + 1;
 
-      //      b->next->tape = (char *) malloc((len + 1) * sizeof(char));
+            b->next->tape = (char *) malloc((len + 1) * sizeof(char));
 
             for (j = 0; string[j] != '\0'; j++)
                 b->next->tape[j] = string[j];
@@ -653,9 +653,11 @@ void Enqueue(tuple_t *tmp, queue_t **head, int count, int i, const char string[]
             b->next->tape[j + 1] = '\0';
 
         } else {
+            clock_t start = clock();
 
-     //       b->next->tape = (char *) malloc((len + 1) * sizeof(char));
-
+            b->next->tape = (char *) malloc((len + 1) * sizeof(char));
+            clock_t end = clock();
+            float seconds = (float)(end - start) / CLOCKS_PER_SEC;
             for (j = 0; string[j] != '\0'; j++) {
                 b->next->tape[j] = string[j];
 
@@ -674,7 +676,7 @@ void Dequeue(queue_t ** head) {
 
         a = b;
         *head = b->next;
- //       free(a->tape);
+        free(a->tape);
 
        c = used;
        a ->next = c;
