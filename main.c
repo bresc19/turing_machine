@@ -33,7 +33,7 @@ typedef struct tuple_s  {
 
 typedef struct queue_s{
     tuple_t *info;
-    char *tape;
+    char tape[4000];
     int i;
     int count;
 
@@ -52,7 +52,7 @@ int  check(int acc[], int j);
 void compute(tuple_t **tmp, char tape[]);
 tuple_t *insert_tuple(tuple_t tmp, tuple_t *pmt, tuple_t *a);
 void Dequeue(queue_t ** head);
-void Enqueue(tuple_t *tmp, queue_t **head, int count, int i, const char string[], int len);
+void Enqueue(tuple_t *tmp, queue_t **head, int count, int i, const char string[], int len, int index, char toWrite);
 
 void re_insert_tuple(tuple_t tmp, tuple_t **pmt, tuple_t *a);
 
@@ -60,7 +60,7 @@ void re_insert_tuple(tuple_t tmp, tuple_t **pmt, tuple_t *a);
 int length(char string[]);
 
 void insert_order(tuple_t tmp, list_tuple_t ** head);
-int zz =0;
+
 int tot = 0;
 int acc[10];
 long int max = 0;
@@ -394,30 +394,32 @@ void compute(tuple_t **tmp, char tape[]) {
 
     struct queue_s *open = NULL;
     int j;
-    queue_t * q;
+    queue_t *q;
     tuple_t *a = *tmp;
     tuple_t *b;
+    char new_ch;
+    int new_pos;
+    int new_count;
+    int loop = 0;
+    float seconds=0;
+    Enqueue(a, &open, 0, 1, tape, length(tape), -1, 'c');
 
-    while (a != NULL) {
-        if (tape[1] == a->toGet)
-            Enqueue(a, &open, 0, 1, tape, length(tape));
-        a = a->next_bro;
-    }
 
     while (open != NULL) {
-
+time_t start = clock();
+seconds = 0;
         if (open->tape[open->i] == open->info->toGet) {
-            open->tape[open->i] = open->info->toSet;
-            open->count++;
-            open->i = open->info->move + open->i;
+            new_pos = open->info->move + open->i;
+            new_ch = open->info->toSet;
+            new_count = open->count + 1;
 
-            if (open->count > max ) {
-                while(open != NULL) {
-                    q = open;
-                    open = open ->next;
-                    free(q);
-                }
-                printf("U\n");
+            if (new_count > max) {
+                  while (open != NULL) {
+                      q = open;
+                      open = open->next;
+                      free(q);
+                  }
+                  printf("U\n");
                 return;
             }
 
@@ -431,9 +433,9 @@ void compute(tuple_t **tmp, char tape[]) {
                     if (check(acc, open->info->next_state) == 1) {
 
 
-                        while(open != NULL) {
+                        while (open != NULL) {
                             q = open;
-                            open = open ->next;
+                            open = open->next;
                             free(q);
                         }
                         printf("1\n");
@@ -444,25 +446,26 @@ void compute(tuple_t **tmp, char tape[]) {
                     b = search(root, open->info->next_state);
 
 
-
                 }
             }
             j = length(open->tape);
-            while (b != NULL) {
-                if (open->tape[open->i] == b->toGet|| open->tape[0] != '_' || open->tape[j-1] != '_' ) {
-                    Enqueue(b, &open, open->count, open->i, open->tape, j);
-                    zz++;
-
-                }
-                b = b->next_bro;
+            if (b != NULL) {
+                Enqueue(b, &open, new_count, new_pos, open->tape, j, open->i, new_ch);
             }
-
-        }
-        Dequeue(&open);
+            if (open->info->next_bro == NULL ) {
+                Dequeue(&open);
+            } else open->info = open->info->next_bro;
+        } else if (open->info->next_bro == NULL)
+            Dequeue(&open);
+        else open->info = open->info->next_bro;
+        time_t end = clock();
+         seconds = (float)(end - start) / CLOCKS_PER_SEC;
 
     }
 
-    printf("0\n");
+    if (loop == 0)
+        printf("0\n");
+    else printf("U");
 
 }
 
@@ -558,7 +561,7 @@ void re_insert_tuple(tuple_t tmp, tuple_t **pmt, tuple_t *a) {
 }
 
 
-void Enqueue(tuple_t *tmp, queue_t **head, int count, int i, const char string[], int len) {
+void Enqueue(tuple_t *tmp, queue_t **head, int count, int i, const char string[], int len, int index, char toWrite) {
 
     queue_t *c;
     queue_t *a = *head;
@@ -574,11 +577,11 @@ void Enqueue(tuple_t *tmp, queue_t **head, int count, int i, const char string[]
         a->i = i;
         a->count = count;
         a->next = NULL;
-        a->tape = NULL;
+       // a->tape = NULL;
         if (string[0] != '_') {
             len = len + 1;
 
-            a->tape = (char *) malloc((len + 1) * sizeof(char));
+ //           a->tape = (char *) malloc((len + 1) * sizeof(char));
 
             a->tape[0] = '_';
 
@@ -589,7 +592,7 @@ void Enqueue(tuple_t *tmp, queue_t **head, int count, int i, const char string[]
 
         } else if (string[len - 1] != '_') {
             len = len + 1;
-            a->tape = (char *) malloc((len + 1) * sizeof(char));
+ //           a->tape = (char *) malloc((len + 1) * sizeof(char));
 
             for (j = 0; string[j] != '\0'; j++)
                 a->tape[j] = string[j];
@@ -597,15 +600,13 @@ void Enqueue(tuple_t *tmp, queue_t **head, int count, int i, const char string[]
             a->tape[j + 1] = '\0';
 
         } else {
-            a->tape = (char *) malloc((len + 1) * sizeof(char));
+   //         a->tape = (char *) malloc((len + 1) * sizeof(char));
 
 
             for (j = 0; string[j] != '\0'; j++) {
                 a->tape[j] = string[j];
 
             }
-
-
             a->tape[len] = '\0';
         }
 
@@ -617,7 +618,7 @@ void Enqueue(tuple_t *tmp, queue_t **head, int count, int i, const char string[]
     if (used == NULL) {
         b->next = ALLOC_QUEUE;
         b->next->info = tmp;
-        b->next->tape = NULL;
+   //     b->next->tape = NULL;
         b->next->count = count;
         b->next->i = i;
         b->next->next = NULL;
@@ -633,33 +634,36 @@ void Enqueue(tuple_t *tmp, queue_t **head, int count, int i, const char string[]
     }
         if (string[0] != '_') {
             len = len + 1;
-            b->next->tape = (char *) malloc((len + 1) * sizeof(char));
+ //           b->next->tape = (char *) malloc((len + 1) * sizeof(char));
 
             b->next->tape[0] = '_';
 
             for (j = 1, y = 0; string[y] != '\0'; j++, y++)
                 b->next->tape[j] = string[y];
+            b->next->tape[index+1]= toWrite;
             b->next->tape[j] = '\0';
             if (i < 0)
                 b->next->i = 0;
+
         } else if (string[len - 1] != '_') {
             len = len + 1;
 
-            b->next->tape = (char *) malloc((len + 1) * sizeof(char));
+    //        b->next->tape = (char *) malloc((len + 1) * sizeof(char));
 
             for (j = 0; string[j] != '\0'; j++)
                 b->next->tape[j] = string[j];
+            b->next->tape[index]= toWrite;
+
             b->next->tape[j] = '_';
             b->next->tape[j + 1] = '\0';
 
         } else {
-            clock_t start = clock();
 
-            b->next->tape = (char *) malloc((len + 1) * sizeof(char));
-            clock_t end = clock();
-            float seconds = (float)(end - start) / CLOCKS_PER_SEC;
+   //         b->next->tape = (char *) malloc((len + 1) * sizeof(char));
             for (j = 0; string[j] != '\0'; j++) {
                 b->next->tape[j] = string[j];
+                b->next->tape[index]= toWrite;
+
 
             }
             b->next->tape[len] = '\0';
@@ -676,7 +680,7 @@ void Dequeue(queue_t ** head) {
 
         a = b;
         *head = b->next;
-        free(a->tape);
+   //     free(a->tape);
 
        c = used;
        a ->next = c;
