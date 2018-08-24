@@ -65,16 +65,13 @@ void re_insert_tuple(tuple_t tmp, tuple_t **pmt, tuple_t *a);
 int length(char string[]);
 
 void insert_order(tuple_t tmp, list_tuple_t ** head);
+
 int tot = 0;
 int acc[10];
 long int max = 0;
 tuple_t *root = NULL;
-queue_t * last_queue= NULL;
-queue_t *queue_used = NULL;
-list_tape_t *tape_used = NULL;
-list_tape_t *last_tape = NULL;
-
-
+queue_t * b= NULL;
+queue_t *used = NULL;
 
 int main(int argc, const char *argv[]) {
 
@@ -399,37 +396,39 @@ tuple_t * search(tuple_t *head, int state){
 
 
 void compute(tuple_t **tmp, char tape[]) {
+    int qqqq = 0;
     queue_t *open = NULL;
     list_tape_t *tapes = NULL;
+    int j;
     char new_ch;
     int new_pos;
-    int new_count;
     queue_t * q;
     list_tape_t * p;
     tuple_t *a = *tmp;
     tuple_t *b;
+
     insert_step(&tapes, 1, 0, 'c', -1, tape);
-    Enqueue(a, &open);
+    while (a != NULL) {
+        if (tape[1] == a->toGet)
+            Enqueue(a, &open);
+        a = a->next_bro;
+    }
 
-
-    while (open != NULL && tapes != NULL) {
+    while (open != NULL) {
         if (tapes->tape[tapes->i] == open->info->toGet) {
             new_pos = open->info->move + tapes->i;
             new_ch = open->info->toSet;
-            new_count = tapes->count + 1;
 
-            if (new_count > max ) {
+            if (tapes->count + 1 > max ) {
                 while (open != NULL) {
                     q = open;
                     open = open->next;
                     free(q);
-
                 }
                 while (tapes != NULL) {
                     p = tapes;
                     tapes = tapes->next;
                     free(p->tape);
-                    free(p);
                 }
                 printf("U\n");
                 return;
@@ -467,21 +466,22 @@ void compute(tuple_t **tmp, char tape[]) {
 
                 }
             }
-            if(b != NULL) {
-                insert_step(&tapes, new_pos, new_count, new_ch, tapes->i, tapes->tape);
+            if(b != NULL)
+            insert_step(&tapes, new_pos, tapes->count+1, new_ch, tapes->i, tapes->tape);
+
+
+
+            while (b != NULL) {
                 Enqueue(b, &open);
+
+                b = b->next_bro;
             }
-
-
-
             if(open->info->next_bro == NULL){
                 p = tapes;
                 tapes = tapes->next;
                 free(p->tape);
                 free(p);
-                Dequeue(&open);
             }
-            else open->info = open->info->next_bro;
 
         }
         else if (open->info->next_bro == NULL) {
@@ -489,15 +489,11 @@ void compute(tuple_t **tmp, char tape[]) {
                 tapes = tapes->next;
                 free(p->tape);
                 free(p);
-            Dequeue(&open);
-
-        }
-
-        else open->info = open->info->next_bro;
+            }
 
 
 
-
+        Dequeue(&open);
 
     }
 
@@ -611,38 +607,41 @@ void Enqueue(tuple_t *tmp, queue_t **head) {
 
 
         *head = a;
-        last_queue = a;
+        b = a;
         return;
     }
 
-    if (queue_used == NULL) {
-        last_queue->next = ALLOC_QUEUE;
-        last_queue->next->info = tmp;
-        last_queue->next->next = NULL;
+    if (used == NULL) {
+        b->next = ALLOC_QUEUE;
+        b->next->info = tmp;
+        b->next->next = NULL;
     }
     else {
-        c = queue_used;
-        queue_used = queue_used->next;
-        last_queue->next = c;
-        last_queue->next->info = tmp;
+        c = used;
+        used = used->next;
+        b->next = c;
+        b->next->info = tmp;
 
-        last_queue->next->next = NULL;
+        b->next->next = NULL;
 
     }
-    last_queue = last_queue->next;
+    b = b->next;
 
 }
 void Dequeue(queue_t ** head) {
 
     queue_t *c;
     if(*head != NULL) {
+
         queue_t *b = *head;
         queue_t *a;
+
         a = b;
         *head = b->next;
-       c = queue_used;
+
+       c = used;
        a ->next = c;
-       queue_used = a;
+       used = a;
 
     }
 
@@ -765,20 +764,23 @@ void insert_step(list_tape_t ** head, int i, int count, char toWrite, int index,
         } else if (index >= len - 1) {
             len = len + 1;
             tmp->next->tape = (char *) malloc((len + 1) * sizeof(char));
-            memcpy(tmp->next->tape, tape, len-1);
-
+            for (y = 0; tape[y] != '\0'; y++) {
+                tmp->next->tape[y] = tape[y];
+            }
             tmp->next->tape[index] = toWrite;
-            tmp->next->tape[len-1] = '_';
-            tmp->next->tape[len] = '\0';
+            tmp->next->tape[y] = '_';
+            tmp->next->tape[y + 1] = '\0';
 
 
         } else {
-           tmp->next->tape = (char *) malloc((len + 1) * sizeof(char));
-           memcpy(tmp->next->tape, tape, len);
+            tmp->next->tape = (char *) malloc((len + 1) * sizeof(char));
 
+            for (y = 0; tape[y] != '\0'; y++) {
+                tmp->next->tape[y] = tape[y];
+            }
             tmp->next->tape[index] = toWrite;
 
-            tmp->next->tape[len] = '\0';
+            tmp->next->tape[y] = '\0';
 
         }
 
