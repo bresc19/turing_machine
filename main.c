@@ -48,7 +48,6 @@ int  check(int acc[], int j);
 void compute(tuple_t *tmp, char tape[]);
 
 void Enqueue(tuple_t *tmp, struct queue_s head[], int count, int i, const char string[], int len, int index, char toWrite, int num);
-int length(char string[]);
 
 void insert_order(tuple_t tmp, list_tuple_t ** head);
 
@@ -338,18 +337,6 @@ void Enqueue(tuple_t *tmp, struct queue_s head[], int count, int i, const char s
 
         head[num].tape[len] = '\0';
     }
-
-
-    return;
-}
-
-
-int length(char string[]){
-    int i = 0;
-    while(string[i] != '\0'){
-        i++;
-    }
-    return i;
 }
 
 
@@ -423,7 +410,18 @@ void find_child(list_tuple_t *head, list_tuple_t *elem){
     }
 }
 
-void Enqueue_last(tuple_t *tmp, struct queue_s head[], int count, int i, const char string[], int len, int index, char toWrite, int num) {
+void Enqueue_last(tuple_t *tmp, struct queue_s head[], int count, int i,  char string[], int len, int index, char toWrite, int num) {
+    if(index >1 && index < len-2){
+        head[num].info = tmp;
+        head[num].i = i;
+        head[num].count = count;
+        head[num].next = NULL;
+        head[num].tape = string;
+        head[num].tape[index]= toWrite;
+        return;
+    }
+    else Enqueue(tmp, head, count, i, string, len, index, toWrite, num);
+
 
 
 }
@@ -431,9 +429,6 @@ void Enqueue_last(tuple_t *tmp, struct queue_s head[], int count, int i, const c
 
 
 void Enqueue_first(tuple_t *tmp, struct queue_s head[], int count, int i, char *string, int num, int len) {
-
-    int j = 0;
-    int y = 0;
 
     head[num].info = tmp;
     head[num].i = i;
