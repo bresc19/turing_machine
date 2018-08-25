@@ -50,11 +50,7 @@ typedef struct list_tuple_s{
 int  check(int acc[], int j);
 void compute(tuple_t *tmp, char tape[]);
 void Dequeue(queue_t ** head);
-void Enqueue(tuple_t *tmp, queue_t **head, int count, int i, const char string[], int len, int index, char toWrite);
-
-void re_insert_tuple(tuple_t tmp, tuple_t **pmt, tuple_t *a);
-
-
+void Enqueue(tuple_t *tmp, struct queue_s head[], int count, int i, const char string[], int len, int index, char toWrite, int num);
 int length(char string[]);
 
 void insert_order(tuple_t tmp, list_tuple_t ** head);
@@ -66,7 +62,7 @@ int tot = 0;
 int acc[10];
 long int max = 0;
 tuple_t *root = NULL;
-queue_t * b= NULL;
+queue_t * head= NULL;
 queue_t *used = NULL;
 
 int main(int argc, const char *argv[]) {
@@ -192,99 +188,83 @@ int main(int argc, const char *argv[]) {
     return 0;
 }
 
-
-
-tuple_t * search(tuple_t *head, int state){
-    tuple_t *tmp;
-
-    if(state == 0 && head ->curr_state == 0  && head -> f_child != NULL && head->next_bro != NULL)
-        return head;
-    if(state == head ->next_state && head -> f_child != NULL){
-        return head->f_child;
-
-    }
-    if(head -> f_child != NULL) {
-        tmp = search(head->f_child, state);
-        if(tmp != NULL)
-            return tmp;
-
-    }
-
-    if(head->next_bro != NULL) {
-        tmp =  search(head->next_bro, state);
-        if(tmp != NULL)
-            return tmp;
-    }
-
-    return NULL;
-}
-
-
 void compute(tuple_t *tmp, char tape[]) {
 
-    struct queue_s *open = NULL;
+    struct queue_s open[2500];
     int j;
-    queue_t * q;
     tuple_t *a = tmp;
     tuple_t *b;
     char new_ch;
     int new_pos;
     int new_count;
+    int x1 = 0;
+    int x2 = 0;
+
+    Enqueue(a, open, 0, 1, tape, length(tape), -2, 'c', x2);
+    x2++;
 
 
-    Enqueue(a, &open, 0, 1, tape, length(tape), -1, 'c');
+    while (x1 != x2) {
 
-
-    while (open != NULL) {
-
-        if (open->tape[open->i] == open->info->toGet) {
-            new_pos = open->info->move + open->i;
-            new_ch = open->info->toSet;
-            new_count = open->count + 1;
+        if (open[x1].tape[open[x1].i] == open[x1].info->toGet) {
+            new_pos = open[x1].info->move + open[x1].i;
+            new_ch = open[x1].info->toSet;
+            new_count = open[x1].count + 1;
 
             if (new_count > max) {
-                while (open != NULL) {
-                    q = open;
-                    open = open->next;
-                    free(q);
-                }
+                for( j = x1; j<x2; j++)
+                    if(open[j].tape != NULL)
+                        free(open[j].tape);
                 printf("U\n");
                 return;
             }
 
 
-                b = open->info->f_child;
-                if (b == NULL) {
+            b = open[x1].info->f_child;
+            if (b == NULL) {
 
-                    if (check(acc, open->info->next_state) == 1) {
+                if (check(acc, open[x1].info->next_state) == 1) {
+                    for( j = x1; j<x2; j++)
+                        if(open[j].tape != NULL)
+                            free(open[j].tape);
+                    printf("1\n");
 
-
-                        while (open != NULL) {
-                            q = open;
-                            open = open->next;
-                            free(q);
-                        }
-                        printf("1\n");
-
-                        return;
-                    }
-
-
-
+                    return;
                 }
 
-            j = length(open->tape);
+
+
+            }
+
+            j = (int) strlen(open[x1].tape);
             if (b != NULL) {
-                Enqueue(b, &open, new_count, new_pos, open->tape, j, open->i, new_ch);
+                Enqueue(b, open, new_count, new_pos, open[x1].tape, j, open[x1].i, new_ch, x2);
+                if(x2 != 2499)
+                    x2++;
+                else x2 = 0;
             }
-            if (open->info->next_bro == NULL) {
-                Dequeue(&open);
+            if(open[x1].info->next_bro == NULL) {
+                if(open[x1].tape != NULL)
+                    free(open[x1].tape);
+                open[x1].tape = NULL;
+                if(x1!=2499)
+                    x1++;
+                else x1 = 0;
             }
-            else open ->info = open->info ->next_bro;
+            else open[x1].info = open[x1].info ->next_bro;
         }
-        else if(open->info->next_bro == NULL)
-            Dequeue(&open);
-        else open->info = open->info ->next_bro;
+        else if(open[x1].info->next_bro == NULL) {
+            if(open[x1].tape != NULL)
+
+                free(open[x1].tape);
+            open[x1].tape = NULL;
+
+            if(x1!=2499)
+                x1++;
+            else x1 = 0;
+
+        }
+        else open[x1].info = open[x1].info ->next_bro;
 
     }
 
@@ -304,191 +284,64 @@ int check(int acc[], int j) {
     return 0;
 }
 
-void insert_on_tail(tuple_t tmp, tuple_t ** head){
-    tuple_t * new;
-
-    tuple_t *b;
-
-    tuple_t * a = *head;
 
 
-    if(a->f_child == NULL) {
-        new= ALLOC_TUPLE;
-        new->curr_state = tmp.curr_state;
-        new-> next_state = tmp.next_state;
-        new->move= tmp.move;
-        new -> toSet = tmp.toSet;
-        new->toGet = tmp.toGet;
-        new->next_bro = NULL;
-        new ->f_child = NULL;
-        a->f_child = new;
-        return;
-    }
+void Enqueue(tuple_t *tmp, struct queue_s head[], int count, int i, const char string[], int len, int index, char toWrite, int num) {
 
-    b = a->f_child;
-
-    if (tmp.curr_state == b->curr_state && tmp.next_state == b->next_state &&
-        tmp.move == b->move &&
-        tmp.toSet == b->toSet && tmp.toGet == b->toGet)
-        return;
-
-    while(b->next_bro != NULL){
-        if (tmp.curr_state == b->curr_state && tmp.next_state == b->next_state &&
-            tmp.move == b->move &&
-            tmp.toSet == b->toSet && tmp.toGet == b->toGet)
-            return;
-        b = b->next_bro;
-    }
-
-    if (tmp.curr_state == b->curr_state && tmp.next_state == b->next_state &&
-        tmp.move == b->move &&
-        tmp.toSet == b->toSet && tmp.toGet == b->toGet)
-        return;
-    new= ALLOC_TUPLE;
-    new->curr_state = tmp.curr_state;
-    new-> next_state = tmp.next_state;
-    new->move= tmp.move;
-    new -> toSet = tmp.toSet;
-    new->toGet = tmp.toGet;
-    new->next_bro = NULL;
-    new ->f_child = NULL;
-    b->next_bro = new;
-}
-
-void re_insert_tuple(tuple_t tmp, tuple_t **pmt, tuple_t *a) {
-
-
-    if(tot > 3000)
-        return;
-    if (a->next_state == tmp.curr_state && a->curr_state != a->next_state)
-        insert_on_tail(tmp, &a);
-
-    if (a->next_bro == NULL && a->f_child == NULL)
-        return;
-
-    if (a->next_bro != NULL) {
-        tot++;
-        re_insert_tuple(tmp, pmt, a->next_bro);
-    }
-
-    if (a->f_child != NULL) {
-        tot++;
-        re_insert_tuple(tmp, pmt, a->f_child);
-
-    }
-
-}
-
-
-void Enqueue(tuple_t *tmp, queue_t **head, int count, int i, const char string[], int len, int index, char toWrite) {
-
-    queue_t *c;
-    queue_t *a = *head;
     int j = 0;
     int y = 0;
 
-    if (a == NULL) {
-
-
-        a = ALLOC_QUEUE;
-
-        a->info = tmp;
-        a->i = i;
-        a->count = count;
-        a->next = NULL;
-        a->tape = NULL;
-        if (string[0] != '_') {
-            len = len + 1;
-
-            a->tape = (char *) malloc((len + 1) * sizeof(char));
-
-            a->tape[0] = '_';
-
-            for (j = 1; string[y] != '\0'; j++, y++)
-                a->tape[j] = string[y];
-            a->tape[j] = '\0';
-            a->i = 0;
-
-        } else if (string[len - 1] != '_') {
-            len = len + 1;
-            a->tape = (char *) malloc((len + 1) * sizeof(char));
-
-            for (j = 0; string[j] != '\0'; j++)
-                a->tape[j] = string[j];
-            a->tape[j] = '_';
-            a->tape[j + 1] = '\0';
-
-        } else {
-            a->tape = (char *) malloc((len + 1) * sizeof(char));
-
-
-            for (j = 0; string[j] != '\0'; j++) {
-                a->tape[j] = string[j];
-
-            }
-            a->tape[len] = '\0';
-        }
-
-        *head = a;
-        b = a;
-        return;
-    }
-
-    if (used == NULL) {
-        b->next = ALLOC_QUEUE;
-        b->next->info = tmp;
-        b->next->tape = NULL;
-        b->next->count = count;
-        b->next->i = i;
-        b->next->next = NULL;
-    }
-    else {
-        c = used;
-        used = used->next;
-        b->next = c;
-        b->next->info = tmp;
-        b->next->count = count;
-        b->next->i = i;
-        b->next->next = NULL;
-    }
-    if (string[0] != '_') {
+    head[num].info = tmp;
+    head[num].i = i;
+    head[num].count = count;
+    head[num].next = NULL;
+    if (index == 0 && i == -1) {
         len = len + 1;
-        b->next->tape = (char *) malloc((len + 1) * sizeof(char));
+        head[num].tape = (char *) malloc((len + 1) * sizeof(char));
 
-        b->next->tape[0] = '_';
+        head[num].tape[0] = '_';
 
         for (j = 1, y = 0; string[y] != '\0'; j++, y++)
-            b->next->tape[j] = string[y];
-        b->next->tape[index+1]= toWrite;
-        b->next->tape[j] = '\0';
+            head[num].tape[j] = string[y];
+        if(index != -2)
+            head[num].tape[index+1]= toWrite;
+
+
+        head[num].tape[len] = '\0';
         if (i < 0)
-            b->next->i = 0;
+            head[num].i = 0;
 
     } else if (string[len - 1] != '_') {
         len = len + 1;
 
-        b->next->tape = (char *) malloc((len + 1) * sizeof(char));
+        head[num].tape = (char *) malloc((len + 1) * sizeof(char));
 
         for (j = 0; string[j] != '\0'; j++)
-            b->next->tape[j] = string[j];
-        b->next->tape[index]= toWrite;
+            head[num].tape[j] = string[j];
 
-        b->next->tape[j] = '_';
-        b->next->tape[j + 1] = '\0';
+        head[num].tape[j] = '_';
+        if(index != -2)
+
+            head[num].tape[index]= toWrite;
+        head[num].tape[len] = '\0';
 
     } else {
 
-        b->next->tape = (char *) malloc((len + 1) * sizeof(char));
-        for (j = 0; string[j] != '\0'; j++) {
-            b->next->tape[j] = string[j];
-            b->next->tape[index]= toWrite;
+        head[num].tape = (char *) malloc((len + 1) * sizeof(char));
+        memcpy(head[num].tape, string, len);
 
+        if(index != -2)
+            head[num].tape[index]= toWrite;
 
-        }
-        b->next->tape[len] = '\0';
+        head[num].tape[len] = '\0';
     }
-    b = b->next;
+
+
+    return;
 }
+
+
+
 void Dequeue(queue_t ** head) {
 
     queue_t *c;
