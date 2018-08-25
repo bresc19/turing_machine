@@ -47,7 +47,7 @@ typedef struct list_tuple_s{
 
 int  check(int acc[], int j);
 void compute(tuple_t *tmp, char tape[]);
-void Dequeue(queue_t ** head);
+
 void Enqueue(tuple_t *tmp, struct queue_s head[], int count, int i, const char string[], int len, int index, char toWrite, int num);
 int length(char string[]);
 
@@ -57,8 +57,6 @@ void find_child(list_tuple_t *head, list_tuple_t *elem);
 
 int acc[10];
 long int max = 0;
-tuple_t *root = NULL;
-queue_t * head= NULL;
 queue_t *used = NULL;
 
 int main(int argc, const char *argv[]) {
@@ -186,7 +184,6 @@ void compute(tuple_t *tmp, char tape[]) {
     struct queue_s open[2500];
     int j;
     tuple_t *a = tmp;
-    tuple_t *b;
     char new_ch;
     int new_pos;
     int new_count;
@@ -211,8 +208,7 @@ void compute(tuple_t *tmp, char tape[]) {
                 printf("U\n");
                 return;
             }
-            b = open[x1].info->f_child;
-            if (b == NULL) {
+            if (open[x1].info->f_child; == NULL) {
 
                 if (check(acc, open[x1].info->next_state) == 1) {
                     for( j = x1; j<x2; j++)
@@ -224,8 +220,8 @@ void compute(tuple_t *tmp, char tape[]) {
                 }
             }
             j = (int) strlen(open[x1].tape);
-            if (b != NULL) {
-                Enqueue(b, open, new_count, new_pos, open[x1].tape, j, open[x1].i, new_ch, x2);
+            if (open[x1].info->f_child != NULL) {
+                Enqueue(open[x1].info->f_child, open, new_count, new_pos, open[x1].tape, j, open[x1].i, new_ch, x2);
                 if(x2 != 2499)
                     x2++;
                 else x2 = 0;
@@ -324,28 +320,6 @@ void Enqueue(tuple_t *tmp, struct queue_s head[], int count, int i, const char s
 
 
     return;
-}
-
-
-
-void Dequeue(queue_t ** head) {
-
-    queue_t *c;
-    if(*head != NULL) {
-
-        queue_t *b = *head;
-        queue_t *a;
-
-        a = b;
-        *head = b->next;
-        free(a->tape);
-
-        c = used;
-        a ->next = c;
-        used = a;
-
-    }
-
 }
 
 
