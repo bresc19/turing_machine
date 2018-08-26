@@ -29,7 +29,7 @@ typedef struct tuple_s  {
 
 typedef struct queue_s{
     tuple_t *info;
-    char *tape;
+    char tape[5000];
     int i;
     unsigned int count;
 
@@ -51,7 +51,7 @@ void insert_order(tuple_t tmp, list_tuple_t ** head);
 
 void find_child(list_tuple_t *head, list_tuple_t *elem);
 
-void Enqueue_first(tuple_t *tmp, struct queue_s head[], int count, int i, char *string, int num, int len);
+void Enqueue_first(tuple_t *tmp, struct queue_s head[], unsigned int count, int i, char *string, int num, int len);
 
 int acc[10];
 long int max = 0;
@@ -178,7 +178,7 @@ int main(int argc, const char *argv[]) {
 
 void compute(tuple_t *tmp, char tape[]) {
 
-    struct queue_s open[2500];
+    struct queue_s open[64];
     int j;
     tuple_t *a = tmp;
     int new_count;
@@ -191,17 +191,17 @@ void compute(tuple_t *tmp, char tape[]) {
         if (open[x1].tape[open[x1].i] == open[x1].info->toGet) {
             new_count = open[x1].count + 1;
             if (new_count > max) {
-                for (j = x1; j < x2; j++)
-                    if (open[j].tape != NULL)
-                        free(open[j].tape);
+                // for (j = x1; j < x2; j++)
+                // if (open[j].tape != NULL)
+                //       free(open[j].tape);
                 printf("U\n");
                 return;
             }
             if (open[x1].info->f_child == NULL) {
                 if (check(acc, open[x1].info->next_state) == 1) {
-                    for (j = x1; j < x2; j++)
-                        if (open[j].tape != NULL)
-                            free(open[j].tape);
+                    // for (j = x1; j < x2; j++)
+                    //  if (open[j].tape != NULL)
+                    //   free(open[j].tape);
                     printf("1\n");
 
                     return;
@@ -211,25 +211,25 @@ void compute(tuple_t *tmp, char tape[]) {
             if (open[x1].info->f_child != NULL) {
                 Enqueue(open[x1].info->f_child, open, new_count, open[x1].info->move + open[x1].i, open[x1].tape, j,
                         open[x1].i, open[x1].info->toSet, x2);
-                if (x2 != 2499)
+                if (x2 != 63)
                     x2++;
                 else x2 = 0;
             }
             if (open[x1].info->next_bro == NULL) {
-                if (open[x1].tape != NULL)
-                    free(open[x1].tape);
-                open[x1].tape = NULL;
-                if (x1 != 2499)
+                // if (open[x1].tape != NULL)
+                //   free(open[x1].tape);
+                //               open[x1].tape = NULL;
+                if (x1 != 63)
                     x1++;
                 else x1 = 0;
             } else open[x1].info = open[x1].info->next_bro;
 
         } else if (open[x1].info->next_bro == NULL) {
-            if (open[x1].tape != NULL)
-                free(open[x1].tape);
-            open[x1].tape = NULL;
+            //if (open[x1].tape != NULL)
+            //   free(open[x1].tape);
+//            open[x1].tape = NULL;
 
-            if (x1 != 2499)
+            if (x1 != 63)
                 x1++;
             else x1 = 0;
 
@@ -264,7 +264,7 @@ void Enqueue(tuple_t *tmp, struct queue_s head[], int count, int i, const char s
     head[num].count = count;
     if (index == 0 && i == -1) {
         len = len + 1;
-        head[num].tape = (char *) malloc((len + 1) * sizeof(char));
+        //      head[num].tape = (char *) malloc((len + 1) * sizeof(char));
 
         head[num].tape[0] = '_';
 
@@ -280,7 +280,7 @@ void Enqueue(tuple_t *tmp, struct queue_s head[], int count, int i, const char s
     } else if (string[len - 1] != '_') {
         len = len + 1;
 
-        head[num].tape = (char *) malloc((len + 1) * sizeof(char));
+        //      head[num].tape = (char *) malloc((len + 1) * sizeof(char));
 
         for (j = 0; string[j] != '\0'; j++)
             head[num].tape[j] = string[j];
@@ -292,7 +292,7 @@ void Enqueue(tuple_t *tmp, struct queue_s head[], int count, int i, const char s
 
     } else {
 
-        head[num].tape = (char *) malloc((len + 1) * sizeof(char));
+        //      head[num].tape = (char *) malloc((len + 1) * sizeof(char));
         memcpy(head[num].tape, string, len);
 
         head[num].tape[index]= toWrite;
@@ -372,12 +372,12 @@ void find_child(list_tuple_t *head, list_tuple_t *elem){
     }
 }
 
-void Enqueue_last(tuple_t *tmp, struct queue_s head[], int count, int i,  char string[], int len, int index, char toWrite, int num) {
+void Enqueue_last(tuple_t *tmp, struct queue_s head[], unsigned int count, int i,  char string[], int len, int index, char toWrite, int num) {
     if(index >1 && index < len-2){
         head[num].info = tmp;
         head[num].i = i;
         head[num].count = count;
-        head[num].tape = string;
+        //     head[num].tape = string;
         head[num].tape[index]= toWrite;
         return;
     }
@@ -389,14 +389,15 @@ void Enqueue_last(tuple_t *tmp, struct queue_s head[], int count, int i,  char s
 
 
 
-void Enqueue_first(tuple_t *tmp, struct queue_s head[], int count, int i, char *string, int num, int len) {
+void Enqueue_first(tuple_t *tmp, struct queue_s head[], unsigned int count, int i, char *string, int num, int len) {
 
     head[num].info = tmp;
     head[num].i = i;
     head[num].count = count;
-    head[num].tape = (char *) malloc((len + 1) * sizeof(char));
+//    head[num].tape = (char *) malloc((len + 1) * sizeof(char));
     memcpy(head[num].tape, string, len);
     head[num].tape[len]= '\0';
 
 
 }
+
