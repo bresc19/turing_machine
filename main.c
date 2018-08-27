@@ -62,7 +62,7 @@ int num_tuple(tuple_t *a, char ch);
 
 int acc[10];
 long int max = 0;
-tapes_t * last = NULL;
+
 int main(int argc, const char *argv[]) {
 
     int z = 0;
@@ -204,17 +204,25 @@ void compute(tuple_t *tmp, char *tape) {
             if (open[x1].time != 1) {
                 new_count = open[x1].count + 1;
                 if (new_count > max) {
-                    for( ;x1!= x2+1; x1++)
-                        if(list[x1].tape != NULL)
+                     for( ;x1 != x2; ) {
+                        if (x1 != x2)
                             free(list[x1].tape);
+                         if (x1 != 63)
+                             x1++;
+                         else x1 = 0;
+                    }
                     printf("U\n");
                     return;
                 }
                 if (open[x1].info->f_child == NULL) {
                     if (check(acc, open[x1].info->next_state) == 1) {
-                            for(; x1!= x2+1; x1++)
-                                if(list[x1].tape != NULL)
-                                    free(list[x1].tape);
+                        for( ;x1 != x2; ) {
+                            if (x1 != x2)
+                                free(list[x1].tape);
+                            if (x1 != 63)
+                                x1++;
+                            else x1 = 0;
+                        }
                         printf("1\n");
                         return;
                     }
@@ -238,35 +246,55 @@ void compute(tuple_t *tmp, char *tape) {
             } else {
                 list[x1].tape[open[x1].i] = open[x1].info->toSet;
                 j = (int) strlen(list[x1].tape);
-                if(list[x1].tape[0] != '_'){
-                    list[x1].tape = (char*)realloc(list[x1].tape,sizeof(char));
+                open[x2].i = open[x1].i + open[x1].info->move;
 
-                    for(z = j; z>0; z--)
+                if(list[x1].tape[0] != '_' || open[x1].i + open[x1].info->move ==-1 ) {
+                    list[x1].tape = (char*)realloc(list[x1].tape, (j+2)*sizeof(char));
+                    open[x2].i = open[x1].i + open[x1].info->move;
+                    if(open[x2].i == -1)
+                        open[x2].i = 0;
+                    for(z = j; z!= -1; z--)
                         list[x1].tape[z+1] = list[x1].tape[z];
                     list[x1].tape[0] = '_';
                     list[x1].tape[j+1] = '\0';
+
                 }
-                else if(list[x1].tape[j] != '_'){
-                    list[x1].tape = (char*)realloc(list[x1].tape,sizeof(char));
+                else if(list[x1].tape[j-1] != '_'){
+                    list[x1].tape = (char*)realloc(list[x1].tape, (j+2)*sizeof(char));
 
                     list[x1].tape[j] = '_';
                     list[x1].tape[j+1] = '\0';
+                    open[x2].i = open[x1].i + open[x1].info->move;
+
                 }
 
                 if (open[x1].count > max) {
+                    for( ;x1 != x2; ) {
+                        if (x1 != x2)
+                            free(list[x1].tape);
+                        if (x1 != 63)
+                            x1++;
+                        else x1 = 0;
+                    }
                     printf("U\n");
                     return;
                 }
                 if (open[x1].info->f_child == NULL) {
                     if (check(acc, open[x1].info->next_state) == 1) {
-
+                        for( ;x1 != x2; ) {
+                            if (x1 != x2)
+                                free(list[x1].tape);
+                            if (x1 != 63)
+                                x1++;
+                            else x1 = 0;
+                        }
                         printf("1\n");
 
                         return;
                     }
                     else {
 
-                        if(list[x1].tape!= NULL)
+                        if(x1 != x2)
                             free(list[x1].tape);
                         if (x1 != 63)
                             x1++;
@@ -275,16 +303,15 @@ void compute(tuple_t *tmp, char *tape) {
                 } else {
 
                     open[x2].count = open[x1].count + 1;
-                    open[x2].i = open[x1].i + open[x1].info->move;
-                    open[x2].time = num_tuple(open[x1].info->f_child, list[x1].tape[open[x2].i ]);
                     open[x2].info = open[x1].info->f_child;
+                    open[x2].time = num_tuple(open[x2].info, list[x1].tape[open[x2].i ]);
                     list[x2].tape = list[x1].tape;
                     if (x2 != 63)
                         x2++;
                     else x2 = 0;
 
-                    if(list[x1].tape!= NULL)
-                        free(list[x1].tape);
+                    list[x1].tape = NULL;
+
 
                     if (x1 != 63)
                         x1++;
@@ -293,10 +320,10 @@ void compute(tuple_t *tmp, char *tape) {
                 }
 
             }
-        } else if (open[x1].info->next_bro == NULL) {
+        } else if (open[x1].time == 0) {
 
-            if(list[x1].tape!= NULL)
-                free(list[x1].tape);
+            free(list[x1].tape);
+
 
             if (x1 != 63)
                 x1++;
