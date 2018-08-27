@@ -248,7 +248,7 @@ void compute(tuple_t *tmp, char *tape) {
                 j = (int) strlen(list[x1].tape);
                 open[x2].i = open[x1].i + open[x1].info->move;
 
-                if(list[x1].tape[0] != '_' || open[x1].i + open[x1].info->move ==-1 ) {
+                if(list[x1].tape[0] != '_' || open[x2].i == -1 ) {
                     list[x1].tape = (char*)realloc(list[x1].tape, (j+2)*sizeof(char));
                     open[x2].i = open[x1].i + open[x1].info->move;
                     if(open[x2].i == -1)
