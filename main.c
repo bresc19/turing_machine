@@ -37,7 +37,6 @@ typedef struct queue_s{
 
 typedef struct tapes_s{
     char *tape;
-    struct tapes_s *next;
 }tapes_t;
 
 typedef struct list_tuple_s{
@@ -186,8 +185,8 @@ int main(int argc, const char *argv[]) {
 
 void compute(tuple_t *tmp, char *tape) {
 
-    struct queue_s open[64];
-    struct tapes_s list[64];
+    struct queue_s open[300];
+    struct tapes_s list[300];
     tapes_t *q;
     int z;
     int j;
@@ -196,20 +195,22 @@ void compute(tuple_t *tmp, char *tape) {
     unsigned int x1 = 0;
     unsigned int x2 = 0;
 
-
     Enqueue_first(a, open, &list[0], 0, 1, tape, 0, (int) strlen(tape));
     x2++;
-    while (x1 != x2) {
+    while (x1 != x2 ) {
         if (list[x1].tape[open[x1].i] == open[x1].info->toGet) {
+
             if (open[x1].time != 1) {
                 new_count = open[x1].count + 1;
                 if (new_count > max) {
-                     for( ;x1 != x2; ) {
+                    for( ;x1 != x2; ) {
                         if (x1 != x2)
                             free(list[x1].tape);
-                         if (x1 != 63)
-                             x1++;
-                         else x1 = 0;
+                        if (x1 != 299)
+                            x1++;
+                        else {
+                            x1 = 0;
+                        }
                     }
                     printf("U\n");
                     return;
@@ -219,10 +220,11 @@ void compute(tuple_t *tmp, char *tape) {
                         for( ;x1 != x2; ) {
                             if (x1 != x2)
                                 free(list[x1].tape);
-                            if (x1 != 63)
+                            if (x1 != 299)
                                 x1++;
-                            else x1 = 0;
-                        }
+                            else {
+                                x1 = 0;
+                            }                        }
                         printf("1\n");
                         return;
                     }
@@ -233,9 +235,11 @@ void compute(tuple_t *tmp, char *tape) {
                             open[x1].i, open[x1].info->toSet, x2);
                     open[x1].time--;
 
-                    if (x2 != 63)
+                    if (x2 != 299)
                         x2++;
-                    else x2 = 0;
+                    else {
+                        x2 = 0;
+                    }
 
 
 
@@ -253,15 +257,15 @@ void compute(tuple_t *tmp, char *tape) {
                     open[x2].i = open[x1].i + open[x1].info->move;
                     if(open[x2].i == -1)
                         open[x2].i = 0;
+                    else open[x2].i = open[x1].i + open[x1].info->move;
+
                     for(z = j; z!= -1; z--)
                         list[x1].tape[z+1] = list[x1].tape[z];
                     list[x1].tape[0] = '_';
                     list[x1].tape[j+1] = '\0';
-
                 }
                 else if(list[x1].tape[j-1] != '_'){
                     list[x1].tape = (char*)realloc(list[x1].tape, (j+2)*sizeof(char));
-
                     list[x1].tape[j] = '_';
                     list[x1].tape[j+1] = '\0';
                     open[x2].i = open[x1].i + open[x1].info->move;
@@ -272,10 +276,11 @@ void compute(tuple_t *tmp, char *tape) {
                     for( ;x1 != x2; ) {
                         if (x1 != x2)
                             free(list[x1].tape);
-                        if (x1 != 63)
+                        if (x1 != 299)
                             x1++;
-                        else x1 = 0;
-                    }
+                        else {
+                            x1 = 0;
+                        }                    }
                     printf("U\n");
                     return;
                 }
@@ -284,10 +289,11 @@ void compute(tuple_t *tmp, char *tape) {
                         for( ;x1 != x2; ) {
                             if (x1 != x2)
                                 free(list[x1].tape);
-                            if (x1 != 63)
+                            if (x1 != 299)
                                 x1++;
-                            else x1 = 0;
-                        }
+                            else {
+                                x1 = 0;
+                            }                        }
                         printf("1\n");
 
                         return;
@@ -296,27 +302,30 @@ void compute(tuple_t *tmp, char *tape) {
 
                         if(x1 != x2)
                             free(list[x1].tape);
-                        if (x1 != 63)
+                        if (x1 != 299)
                             x1++;
-                        else x1 = 0;
-                    }
+                        else {
+                            x1 = 0;
+                        }                    }
                 } else {
 
                     open[x2].count = open[x1].count + 1;
                     open[x2].info = open[x1].info->f_child;
                     open[x2].time = num_tuple(open[x2].info, list[x1].tape[open[x2].i ]);
                     list[x2].tape = list[x1].tape;
-                    if (x2 != 63)
+                    if (x2 != 299)
                         x2++;
-                    else x2 = 0;
-
+                    else {
+                        x2 = 0;
+                    }
                     list[x1].tape = NULL;
 
 
-                    if (x1 != 63)
+                    if (x1 != 299)
                         x1++;
-                    else x1 = 0;
-
+                    else {
+                        x1 = 0;
+                    }
                 }
 
             }
@@ -325,10 +334,11 @@ void compute(tuple_t *tmp, char *tape) {
             free(list[x1].tape);
 
 
-            if (x1 != 63)
+            if (x1 != 299)
                 x1++;
-            else x1 = 0;
-
+            else {
+                x1 = 0;
+            }
         } else {
             open[x1].info = open[x1].info->next_bro;
         }
