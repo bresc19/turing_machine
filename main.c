@@ -13,6 +13,7 @@
 #include <time.h>
 
 #define ALLOC_ELEMENT (list_tuple_t *)malloc(sizeof(list_tuple_t))
+#define ALLOC_TUPLE   (tuple_t *)malloc(sizeof(tuple_t))
 
 
 typedef struct tuple_s  {
@@ -37,7 +38,7 @@ typedef struct queue_s{
 
 typedef struct tapes_s{
     char *tape;
-    int len;
+    unsigned short len;
 }tapes_t;
 
 typedef struct list_tuple_s{
@@ -52,13 +53,15 @@ void compute(tuple_t *tmp, char tape[]);
 
 void Enqueue(tuple_t *tmp, struct queue_s head[], struct tapes_s *list, int count, int i, const char string[], int len, int index, char toWrite, int num);
 
-void insert_order(tuple_t tmp, list_tuple_t ** head);
+void insert_on_tail(tuple_t *head, tuple_t new);
 
-void find_child(list_tuple_t *head, list_tuple_t *elem);
+void find_child(list_tuple_t *head, tuple_t *elem);
 
 void Enqueue_first(tuple_t *tmp, struct queue_s head[], struct tapes_s *list, unsigned int count, int i, char *string, int num, int len);
+void insert_order(tuple_t tmp, list_tuple_t ** head);
 
 int num_tuple(tuple_t *a, char ch);
+
 
 int acc[10];
 long int max = 0;
@@ -68,6 +71,7 @@ int main(int argc, const char *argv[]) {
     int z = 0;
     char * a;
     list_tuple_t *p;
+    tuple_t *aaa;
     list_tuple_t *list_state = NULL;
     char k;
     char tape[10000];
@@ -101,31 +105,26 @@ int main(int argc, const char *argv[]) {
                     tmp.move = 0;
 
 
-
                 insert_order(tmp, &list_state);
 
                 fscanf(stdin, "%s", input);
                 z++;
 
-
             }
-
-
             p = list_state;
 
-            while(p->next!= NULL) {
-                if (p->info.curr_state == p->next->info.curr_state) {
-                    p->info.next_bro = &(p->next->info);
+            while(p!= NULL){
+                aaa = &p->info;
+                while(aaa != NULL) {
+
+                    find_child(list_state, aaa);
+                    aaa = aaa->next_bro;
                 }
                 p = p->next;
 
             }
 
-            p = list_state;
-            while(p!=NULL){
-                find_child(list_state, p);
-                p = p->next;
-            }
+
 
             fscanf(stdin, "%s", input);
             for (i = 0; strcmp(input, "max") != 0; i++) {
@@ -186,8 +185,8 @@ int main(int argc, const char *argv[]) {
 
 void compute(tuple_t *tmp, char *tape) {
 
-    struct queue_s open[55];
-    struct tapes_s list[55];
+    struct queue_s open[1000];
+    struct tapes_s list[1000];
     int z;
     int j;
     tuple_t *a = tmp;
@@ -206,7 +205,7 @@ void compute(tuple_t *tmp, char *tape) {
                     for( ;x1 != x2; ) {
                         if (x1 != x2)
                             free(list[x1].tape);
-                        if (x1 != 54)
+                        if (x1 != 999)
                             x1++;
                         else {
                             x1 = 0;
@@ -220,7 +219,7 @@ void compute(tuple_t *tmp, char *tape) {
                         for( ;x1 != x2; ) {
                             if (x1 != x2)
                                 free(list[x1].tape);
-                            if (x1 != 54)
+                            if (x1 != 999)
                                 x1++;
                             else {
                                 x1 = 0;
@@ -235,7 +234,7 @@ void compute(tuple_t *tmp, char *tape) {
                             open[x1].i, open[x1].info->toSet, x2);
                     open[x1].time--;
 
-                    if (x2 != 54)
+                    if (x2 != 999)
                         x2++;
                     else {
                         x2 = 0;
@@ -279,7 +278,7 @@ void compute(tuple_t *tmp, char *tape) {
                     for( ;x1 != x2; ) {
                         if (x1 != x2)
                             free(list[x1].tape);
-                        if (x1 != 54)
+                        if (x1 != 999)
                             x1++;
                         else {
                             x1 = 0;
@@ -292,7 +291,7 @@ void compute(tuple_t *tmp, char *tape) {
                         for( ;x1 != x2; ) {
                             if (x1 != x2)
                                 free(list[x1].tape);
-                            if (x1 != 54)
+                            if (x1 != 999)
                                 x1++;
                             else {
                                 x1 = 0;
@@ -305,7 +304,7 @@ void compute(tuple_t *tmp, char *tape) {
 
                         if(x1 != x2)
                             free(list[x1].tape);
-                        if (x1 != 54)
+                        if (x1 != 999)
                             x1++;
                         else {
                             x1 = 0;
@@ -316,7 +315,7 @@ void compute(tuple_t *tmp, char *tape) {
                     open[x2].info = open[x1].info->f_child;
                     open[x2].time = num_tuple(open[x2].info, list[x1].tape[open[x2].i ]);
                     list[x2].tape = list[x1].tape;
-                    if (x2 != 54)
+                    if (x2 != 999)
                         x2++;
                     else {
                         x2 = 0;
@@ -324,7 +323,7 @@ void compute(tuple_t *tmp, char *tape) {
                     list[x1].tape = NULL;
 
 
-                    if (x1 != 54)
+                    if (x1 != 999)
                         x1++;
                     else {
                         x1 = 0;
@@ -337,7 +336,7 @@ void compute(tuple_t *tmp, char *tape) {
             free(list[x1].tape);
 
 
-            if (x1 != 54)
+            if (x1 != 999)
                 x1++;
             else {
                 x1 = 0;
@@ -422,7 +421,7 @@ void Enqueue(tuple_t *tmp, struct queue_s head[], struct tapes_s *list, int coun
 
 void insert_order(tuple_t tmp, list_tuple_t ** head){
     list_tuple_t * new;
-
+    tuple_t *qqq;
     list_tuple_t *b, *a;
 
 
@@ -436,7 +435,7 @@ void insert_order(tuple_t tmp, list_tuple_t ** head){
     }
 
 
-    if((*head)->info.curr_state >= tmp.curr_state){
+    if((*head)->info.curr_state > tmp.curr_state){
         b = *head;
         new= ALLOC_ELEMENT;
         new->info = tmp;
@@ -452,11 +451,21 @@ void insert_order(tuple_t tmp, list_tuple_t ** head){
         tmp.toSet == b->info.toSet && tmp.toGet == b->info.toGet)
         return;
 
+    if(tmp.curr_state == b->info.curr_state){
+        insert_on_tail(&b->info, tmp);
+        return;
+    }
+
     while(b->next != NULL ){
         if (tmp.curr_state == b->info.curr_state && tmp.next_state == b->info.next_state &&
             tmp.move == b->info.move &&
             tmp.toSet == b->info.toSet && tmp.toGet == b->info.toGet)
             return;
+
+        if(tmp.curr_state == b->info.curr_state){
+            insert_on_tail(&b->info, tmp);
+            return;
+        }
         if(b->next->info.curr_state > tmp.curr_state){
             a = b->next;
             b->next = ALLOC_ELEMENT;
@@ -467,6 +476,10 @@ void insert_order(tuple_t tmp, list_tuple_t ** head){
         b = b->next;
     }
 
+    if(tmp.curr_state == b->info.curr_state){
+        insert_on_tail(&b->info, tmp);
+        return;
+    }
     if (tmp.curr_state == b->info.curr_state && tmp.next_state == b->info.next_state &&
         tmp.move == b->info.move &&
         tmp.toSet == b->info.toSet && tmp.toGet == b->info.toGet)
@@ -479,16 +492,18 @@ void insert_order(tuple_t tmp, list_tuple_t ** head){
 
 
 
-void find_child(list_tuple_t *head, list_tuple_t *elem){
-    list_tuple_t *p;
-    p = head;
-    while(p!= NULL) {
-        if(p->info.curr_state == elem->info.next_state) {
-            elem->info.f_child = &p->info;
-            return;
-        }   else p = p->next;
-    }
+void find_child(list_tuple_t *head, tuple_t *elem){
+    if(head == NULL)
+        return;
+    if(head->info.curr_state == elem->next_state) {
+        elem->f_child = &head->info;
+        return;
+    }   else
+        return find_child(head->next, elem);
 }
+
+
+
 
 
 
@@ -516,4 +531,36 @@ int num_tuple(tuple_t *a, char ch){
         a = a->next_bro;
     }
     return num;
+}
+
+/*void link_bro(list_tuple_t *p){
+    if(p->next == NULL)
+        return;
+
+    if (p->info.curr_state == p->next->info.curr_state) {
+        p->info->next_bro = p->next->info;
+    }
+
+    return link_bro(p->next);
+}*/
+
+
+void insert_on_tail(tuple_t *head, tuple_t new){
+    tuple_t *tmp;
+    tmp = head;
+
+
+    while(tmp->next_bro != NULL){
+        tmp = tmp->next_bro;
+    }
+
+    tmp->next_bro = ALLOC_TUPLE;
+
+    tmp->next_bro->curr_state = new.curr_state;
+    tmp->next_bro->next_state = new.next_state;
+    tmp->next_bro->move = new.move;
+    tmp->next_bro->toGet = new.toGet;
+    tmp->next_bro->toSet = new.toSet;
+    tmp->next_bro->next_bro = NULL;
+    tmp->next_bro ->f_child = NULL;
 }
