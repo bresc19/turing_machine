@@ -9,7 +9,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <time.h>
 
 #define ALLOC_ELEMENT (list_tuple_t *)malloc(sizeof(list_tuple_t))
 #define ALLOC_TUPLE   (tuple_t *)malloc(sizeof(tuple_t))
@@ -58,7 +57,9 @@ int num_tuple(tuple_t *a, char ch);
 int N =0;
 int acc[10];
 long int max = 0;
+
 int main(int argc, const char *argv[]) {
+
 
     int z = 0;
     char * a;
@@ -73,7 +74,6 @@ int main(int argc, const char *argv[]) {
     int j = 0;
     tmp.f_child = NULL;
     tmp.next_bro = NULL;
-
     a = fgets(input, 512, stdin);
 
 
@@ -342,10 +342,7 @@ void compute(tuple_t *tmp, char *tape) {
                 }
             }
         } else if (open[x1].time == 0) {
-
-            free(list[x1].tape);
-
-
+           free(list[x1].tape);
             if (x1 != 999)
                 x1++;
             else {
@@ -354,7 +351,6 @@ void compute(tuple_t *tmp, char *tape) {
         } else {
             open[x1].info = open[x1].info->next_bro;
         }
-
     }
     if (undecidable == 0)
         printf("0\n");
@@ -401,8 +397,8 @@ void Enqueue(tuple_t *tmp, struct queue_s head[], struct tapes_s *list, int coun
 
         list->tape = (char *) malloc((len + 1) * sizeof(char));
 
-        for (j = 0; string[j] != '\0'; j++)
-            list->tape[j] = string[j];
+        memmove(list->tape, string, len);
+
 
         for (; j < len; j++)
             list->tape[j] = '_';
