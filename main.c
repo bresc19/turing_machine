@@ -189,22 +189,17 @@ void compute(tuple_t *tmp, char *tape) {
     tuple_t *a = tmp;
     int new_count;
     unsigned int x1 = 0;
-    unsigned int x2 = 0;
+    unsigned int x2 = 1;
     int undecidable = 0;
 
     Enqueue_first(a, open, &list[0], 0, N, tape, 0, (int) strlen(tape));
-    x2++;
     while (x1 != x2) {
         if (list[x1].tape[open[x1].i] == open[x1].info->toGet) {
             if ((open[x1].info->curr_state == open[x1].info->next_state && open[x1].info->move == -1 &&
                  list[x1].tape[open[x1].i] == '_' &&
-                 (open[x1].i == 0) )|| ( (open[x1].info->curr_state == open[x1].info->next_state
-                                          && open[x1].info->move == 0  && open[x1].info->toGet == open[x1].info->toSet))) {
+                 (open[x1].i == 0) )) {
                 undecidable = 1;
-
                 free(list[x1].tape);
-
-
                 if (x1 != 999)
                     x1++;
                 else {
@@ -422,14 +417,12 @@ void Enqueue(tuple_t *tmp, struct queue_s head[], struct tapes_s *list, int coun
 
         list->tape = (char *) malloc((len + 1) * sizeof(char));
         memmove(list->tape, string, len);
-
         list->tape[index] = toWrite;
-
         list->tape[len] = '\0';
         list->len = len;
+        head[num].time = num_tuple(head[num].info, list->tape[i]);
 
     }
-    head[num].time = num_tuple(head[num].info, list->tape[i]);
 
 }
 
@@ -546,20 +539,10 @@ int num_tuple(tuple_t *a, char ch){
     }
     return num;
 }
-
-/*void link_bro(list_tuple_t *p){
-    if(p->next == NULL)
-        return;
-
-    if (p->info.curr_state == p->next->info.curr_state) {
-        p->info->next_bro = p->next->info;
-    }
-
-    return link_bro(p->next);
-}*/
-
-
 void insert_on_tail(tuple_t *head, tuple_t new){
+
+
+
     tuple_t *tmp;
     tmp = head;
 
