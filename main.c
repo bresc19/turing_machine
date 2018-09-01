@@ -13,6 +13,7 @@
 #define ALLOC_ELEMENT (list_tuple_t *)malloc(sizeof(list_tuple_t))
 #define ALLOC_TUPLE   (tuple_t *)malloc(sizeof(tuple_t))
 
+
 typedef struct tuple_s  {
     int curr_state;
     char toGet;
@@ -38,6 +39,7 @@ typedef struct tapes_s{
     int len;
 }tapes_t;
 
+
 typedef struct list_tuple_s{
     tuple_t info;
     struct list_tuple_s *next;
@@ -52,7 +54,7 @@ void insert_on_tail(tuple_t *head, tuple_t new);
 void find_child(list_tuple_t *head, tuple_t *elem);
 void Enqueue_first(tuple_t *tmp, struct queue_s head[], struct tapes_s *list, unsigned int count, int i, char *string, int num, int len);
 void insert_order(tuple_t tmp, list_tuple_t ** head);
-int num_tuple(tuple_t *a, char ch);
+int num_tuple(tuple_t **a, char ch);
 
 int N =0;
 int acc[10];
@@ -322,7 +324,7 @@ void compute(tuple_t *tmp, char *tape) {
 
                         open[x2].count = open[x1].count + 1;
                         open[x2].info = open[x1].info->f_child;
-                        open[x2].time = num_tuple(open[x2].info, list[x1].tape[open[x2].i]);
+                        open[x2].time = num_tuple(&open[x2].info, list[x1].tape[open[x2].i]);
                         list[x2].tape = list[x1].tape;
                         if (x2 != 999)
                             x2++;
@@ -389,7 +391,7 @@ void Enqueue(tuple_t *tmp, struct queue_s head[], struct tapes_s *list, int coun
         list->tape[len] = '\0';
         if (i < 0)
             head[num].i = 0;
-        head[num].time = num_tuple(head[num].info, list->tape[i]);
+        head[num].time = num_tuple(&head[num].info, list->tape[i]);
 
 
     } else if (string[len - 1] != '_') {
@@ -406,7 +408,7 @@ void Enqueue(tuple_t *tmp, struct queue_s head[], struct tapes_s *list, int coun
 
         list->tape[index] = toWrite;
         list->tape[len] = '\0';
-        head[num].time = num_tuple(head[num].info, list->tape[i]);
+        head[num].time = num_tuple(&head[num].info, list->tape[i]);
 
 
     } else {
@@ -416,7 +418,7 @@ void Enqueue(tuple_t *tmp, struct queue_s head[], struct tapes_s *list, int coun
         list->tape[index] = toWrite;
         list->tape[len] = '\0';
         list->len = len;
-        head[num].time = num_tuple(head[num].info, list->tape[i]);
+        head[num].time = num_tuple(&head[num].info, list->tape[i]);
 
     }
 
@@ -523,15 +525,30 @@ void Enqueue_first(tuple_t *tmp, struct queue_s head[], struct tapes_s *list, un
     memmove(new_tape, string, len);
     list->tape = new_tape;
     new_tape[len]='\0';
-    head[num].time = num_tuple(head[num].info, string[N]);
+    head[num].time = num_tuple(&head[num].info, string[N]);
 
 }
-int num_tuple(tuple_t *a, char ch){
+int num_tuple(tuple_t **a, char ch){
     int num = 0;
-    while(a!= NULL){
-        if(a->toGet == ch)
+    tuple_t *p = *a;
+    if(*a == NULL)
+        return 0;
+    while(*a != NULL){
+        if((*a)->toGet == ch) {
             num++;
-        a = a->next_bro;
+            break;
+        }
+        else *a = (*a)->next_bro;
+    }
+    if((*a) == NULL) {
+        *a = p;
+        return 0;
+    }
+    p = (*a)->next_bro;
+    while(p!= NULL){
+        if(p->toGet == ch)
+            num++;
+        p = p->next_bro;
     }
     return num;
 }
