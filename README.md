@@ -11,6 +11,8 @@ it's formed by:
 - **Strings** that machine have to compute.
 
 An *example* of input file with clear explaination is [Here](https://github.com/bresc19/turing_machine/blob/master/Info.pdf)
+
+
 All *tests* used are [Here](https://github.com/bresc19/turing_machine/tree/master/Tests) 
 
 
