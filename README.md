@@ -1,4 +1,4 @@
-# turing_machine ![Image of Yaktocat](https://alanturing196.files.wordpress.com/2017/08/cropped-alan_turing_aged_161.jpg?w=50)   
+# Turing Machine ![Image of Yaktocat](https://alanturing196.files.wordpress.com/2017/08/cropped-alan_turing_aged_161.jpg?w=50)   
 
  ###  :computer: A program simulator for  Non-Deterministic Turing-Machines  :computer:
 The simulator was implemented with C-Language, for a project of Algorithms and Data Structure course, at Politecnico of Milan. Project also was valuated with pubblic and private test and graduated with highest mark.
