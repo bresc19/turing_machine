@@ -42,7 +42,7 @@ tr
 9 y y R 9
 acc
 6
-max
+max  
 500000
 run
 xxxyzzzzzzy

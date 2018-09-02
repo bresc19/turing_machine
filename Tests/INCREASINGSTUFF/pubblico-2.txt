@@ -53,10 +53,10 @@ tr
 20 x x S 22
 15 y y R 15
 17 b y L 19
-acc
+acc 
 11
 22
-max
+max 
 4000
 run
 aabbcc
