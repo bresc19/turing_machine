@@ -1,0 +1,402 @@
+tr
+42 d _ S 5
+1 a c S 7
+42 d a S 47
+30 c e S 16
+16 c e L 21
+21 c a S 65
+37 d b L 19
+16 e b S 31
+25 b b L 50
+8 a c L 20
+44 a e L 58
+49 c c L 0
+34 d c L 62
+31 c b S 29
+65 b e L 38
+36 a b L 41
+41 d e L 39
+65 b e S 13
+54 a c S 50
+7 c e S 63
+39 a b S 55
+34 a c L 65
+14 e c S 47
+25 _ e S 57
+34 a e S 42
+26 a d S 23
+20 e a L 51
+59 d b S 15
+14 e a S 20
+56 a a S 39
+17 a c S 27
+43 _ d L 5
+40 c c S 26
+11 a c L 3
+29 e e S 12
+41 _ d L 2
+53 c d L 23
+46 b a L 53
+27 d d L 63
+64 a e S 59
+65 e d S 38
+40 b a S 23
+16 d a L 50
+53 e _ L 4
+55 b e S 30
+47 c c L 14
+52 c c L 40
+48 c d L 9
+11 a d S 49
+49 b d L 42
+45 b c S 63
+62 e b S 6
+53 c d S 35
+11 a c S 3
+13 e e L 2
+57 d b S 14
+42 a d L 62
+49 e c S 34
+53 a e L 48
+29 c c S 61
+49 e a S 34
+15 a e S 29
+43 a e L 4
+61 a b S 13
+10 a c S 0
+51 b d L 37
+16 b e S 51
+62 e c L 53
+23 a e S 5
+24 c a S 58
+0 a c L 44
+29 b a S 14
+12 d a S 27
+23 c d S 58
+4 e e L 62
+44 c _ S 9
+59 e d L 56
+12 e e S 30
+42 d e S 52
+25 c b L 17
+33 a d S 33
+33 e d L 46
+18 _ d L 29
+19 b a S 22
+34 c b S 39
+44 d a S 62
+9 d a S 5
+6 e d S 64
+29 e c L 64
+40 b _ S 1
+2 b c S 32
+10 c a L 17
+28 d c S 41
+15 e d S 63
+34 c d S 3
+18 b b L 53
+48 b c S 36
+45 c a S 52
+25 b e L 41
+7 d c S 9
+22 b d L 32
+60 c a S 55
+29 b e S 59
+5 d a S 40
+27 b b S 22
+53 b c S 31
+65 c a L 44
+3 e e S 17
+17 d d L 32
+56 c a L 41
+63 _ b L 28
+5 a e S 62
+24 b b S 4
+36 c e S 64
+9 a a S 2
+5 d e L 11
+63 a b L 8
+36 a e S 5
+41 c c S 62
+47 c a L 18
+63 a b L 38
+51 e c L 38
+49 d e L 30
+57 e b S 15
+29 e a L 39
+12 a c S 55
+7 d d S 64
+13 c e L 6
+29 e d S 21
+42 d a L 37
+52 d c L 50
+33 b e S 16
+55 e a L 48
+61 c a L 30
+51 d b S 26
+28 e b S 62
+64 a a S 53
+32 b c L 57
+10 c a S 48
+10 a e L 26
+37 d a L 62
+51 a c L 19
+20 d c L 17
+44 a a S 54
+49 _ b S 26
+60 d b S 60
+24 b d L 29
+55 c b S 9
+58 c a L 8
+2 e b S 24
+37 c c L 58
+59 e b L 64
+21 c e S 1
+14 c c L 22
+28 c b S 18
+51 a d S 65
+27 b e S 47
+56 e e S 22
+32 b e L 31
+40 a _ L 45
+35 c a S 2
+53 b d L 41
+37 c b L 62
+19 d e L 33
+53 a a S 11
+32 e e S 35
+65 e a L 60
+26 e e L 16
+11 b b L 65
+17 d a S 4
+0 c c S 0
+1 b d L 1
+2 b a L 2
+4 c d L 4
+5 c e L 5
+6 e e S 6
+7 e e S 7
+8 e e L 8
+9 c d S 9
+10 d e L 10
+11 c b L 11
+12 b d S 12
+14 c a L 14
+16 d c L 16
+17 a c L 17
+18 c c L 18
+19 a c L 19
+20 c a L 20
+21 e d L 21
+22 b d L 22
+23 b e L 23
+24 e e L 24
+25 a d S 25
+26 c a L 26
+28 e c L 28
+30 e b L 30
+31 d e S 31
+32 a c S 32
+33 e b L 33
+34 e e S 34
+35 e a S 35
+36 _ e S 36
+37 a d L 37
+38 d a S 38
+39 _ e S 39
+40 a a S 40
+41 b a L 41
+42 d d S 42
+43 b c S 43
+45 _ a S 45
+46 c c L 46
+47 c c S 47
+48 _ d S 48
+50 e d L 50
+53 e b S 53
+54 a b L 54
+55 d a L 55
+56 b b S 56
+57 a b S 57
+58 a c L 58
+59 e d S 59
+61 b d S 61
+62 e _ L 62
+63 d d S 63
+64 d c S 64
+65 b e L 65
+21 d c L 0
+50 b d L 1
+40 b e L 2
+57 e c L 3
+3 e b S 4
+61 e d S 5
+60 b e L 6
+48 e e L 7
+24 b a L 8
+10 a c S 9
+54 e a S 10
+60 a _ L 11
+61 a e L 12
+17 _ c S 13
+18 a d S 14
+42 b b L 15
+63 a a L 16
+3 d d S 17
+52 e b L 18
+56 d e S 19
+54 b a S 20
+51 c a L 21
+48 a a S 22
+35 e d L 23
+25 b b L 24
+12 a e L 25
+34 e c L 26
+57 d c L 27
+38 c a L 28
+23 d b L 29
+2 d c L 30
+60 e d L 31
+28 b e L 32
+65 d e L 33
+27 b c L 34
+49 a b S 35
+16 d _ L 36
+50 e e L 37
+57 c a L 38
+52 b a S 39
+43 d e L 40
+45 b a L 41
+39 e e L 42
+64 d c L 43
+9 c b S 44
+65 a a L 45
+15 d b S 46
+45 _ d L 47
+24 b c S 48
+46 e a S 49
+30 b b L 50
+17 d b S 51
+31 e b S 52
+27 c a L 53
+0 c b S 54
+14 a b L 55
+5 c a S 56
+6 a c S 57
+30 b c L 58
+43 a b S 59
+19 b c L 60
+6 d e S 61
+43 b d L 62
+40 b e L 63
+11 a d L 64
+36 d e S 65
+56 a e L 66
+0 b e S 19
+1 b c L 19
+2 a c S 6
+3 d a L 24
+4 c e L 55
+5 a e L 50
+6 b d L 27
+7 e c S 56
+8 b e L 15
+9 c b S 44
+10 d a S 46
+11 e a S 45
+12 e e S 45
+13 a c S 8
+14 c d L 20
+15 d d L 14
+16 d a S 25
+17 c a S 52
+18 a e L 65
+19 c d S 38
+20 c e L 47
+21 a d S 38
+22 d d L 3
+23 e d S 37
+24 b a S 26
+25 e b L 40
+26 c b L 65
+27 d c S 4
+28 e a S 18
+29 c d L 34
+30 b d L 23
+31 c c L 22
+32 a b L 49
+33 d e S 14
+34 e b S 12
+35 c a L 20
+36 a c L 39
+37 c a L 29
+38 e b L 12
+39 d e L 40
+40 d d L 0
+41 c e S 62
+42 a _ L 50
+43 e b S 12
+44 c c L 51
+45 a b S 43
+46 a c S 38
+47 e c L 46
+48 a e S 0
+49 b c S 7
+50 c d L 43
+51 d c S 31
+52 a b S 4
+53 d b L 28
+54 e e S 12
+55 c c L 57
+56 c d L 63
+57 b a L 18
+58 d d L 42
+59 c c S 41
+60 c a L 42
+61 d d L 41
+62 b e L 39
+63 a c L 32
+64 a b S 19
+65 a d L 23
+66 c c L 65
+acc
+max
+94035
+run
+aaecacaedccccbaccbabeebbcdcaedeeeddcabccaabdddaebdcedecbdceecbcedebdebcbbbaeededdabcdbdaedbbcecdaddcbeccedadbdddaedeabcbecbecccaabadbceaedebbaebecdccaeaacaadaeddcedcdbaebeaaceeacacceacbaeaaccadd_cbab_ababbbcadccbbdddebebcadebcdadceabe_dabddbddddeaaecbedbcceaacdacbdceceeec_daedbdbd
+cbbdbbbeeedccabbdedcbdbeecedaeacddcbbeebdebbddbcddbdceeebeabebcadebcadbebdabaadbdabdeabaeadcbdaaeddaeabbacbceacaeabddaeaaeccaabddaeebaadcedcddabbccadecc
+caedcccdcce_eaaaaabcbaaeaeadcbddcbcbaaebcdabbaedabbceeebcbbdbbadaaddcaaabdbadaadebcdbadbacbadeeaedccebddcebccbedadceaddbbbdceaedbdeaeccbebceecdaad_eeddacedcdaacbbebeceaeaecdabaeadbbcadcccacc_ebaababeeadedcebbbbec_cadcdebbbdadedbcdc
+cceacccbddacadbedeabdcadaaddbcdaacceaadccdacebcccaeedadccabbdabbeeaebacaacdbeacaacceeabecdadbecaaddabededdbdaeacbeedcdcbddeabcebbabbacceaadcedddaacdbcdbbbbababebdabaaabdceeccbcccbededcdca_cccedbc_cdaedadaddaadbbcdeeedebacd
+adabcbededbceaacedaecaccccababcbbccaaeabdbbcaaddadbaddadbbbdbcbaeeecbbecbaccdccdcdcdddedbadecbabdabbedeabbccbdcdbbedcdabdddadbeaddaddbadadaeddeacc_bbcbaceaadacceccdecccdbeebebbcaebaebddccbcaddcdeccbaddbdeebc_babbecabadcaaacaceebbbaedb
+ceabedeecbcddeadbaaeaccbebebeceecedbeceddbcaccaaaa_acb_dbdbdcccddbcbbccdbdebbdccecbaceeeebedeaeabedadbaddcabeebeebaddaddeebcaeadbe_addebedcbbeadbdedebdddacbecceecabceacadabbdbcddaddbedebaddeadceacccdeadaaeece_aaaadccaacabebbecddadb
+ecbcaeccbdcddaadeeeaccdb_dcdbeadeac_eebaeebeaebebcacaddbaaacaadabddedaececedbdcabdecebaceedaabedadebccdabedecdbdaeecbcadcbbccdaeaeeddddcceccdadeedbceeaacebaaebceac_bdbabdba_dbbdddbeaa
+eaddadcdce_ccadbabebbdcceeccbcceecbebdeceaaaacdaaebcbbcdaadbadecbeeaebb_cededddacbbaeeedabadcaaceeabeabedeccbbdcbcbcebdebdbadbaaecabcebdcdabbadebebebdae_adacedbebacccaabadabbbbeedeaaeeebebacccaeddb
+ddabeeaadaeedeeb_cdecabeabbbaceabeccedecdecedcacecccaaccdeceeddbecbcddcbcdbcddeaebbaaeeeedbcabbadcccecedadcceeacdeabbdbbbbcabbcacdeacdddeecdbdbacebbaaccccbddaeeabbcbdaa_deabbaaececd_dccaaeedaccbbaaeebdeaaedabbedebacbdbabaddabbbadccadccdbcaaeebcddbbcdbebebadbebccbadbea_cccccccdedcedeabb
+ecaebbaeadbeacbdceccddc_bbaddabebdaeeceaabeceabbdbddbcaadebccadadeabacbeebccbaaddcaaecdbdccacdbdabdcdcaacaaadcaabcaddabeadbcddbdeaceabecdeabbaaceccee_aaa_ccddeacdcacacbaaceccdddcccebbebceeed_acbaddddbaeeadcacedadcdbbccccbebdaccaebdcbaaeeeedbebaabecebeacbabaebdceedadecccebeccabaeeaddebdebbeeade
+aacaddbbdaedcbebeadcadaceeeeadacdddeaebbdeecbcccbdeabeaecddeaeaaeeddbbbeecbeedcabcdaab_beacbbcbcaabeddeecdbdebaecbbcebedbbbcecbdcaadedbdebcdbcaacbddeecbdaadaaecbdccddbecadbcaceedddebcadddceccebaaadeeeecdbbcdddccaadeccdacbbbdbbe_bcbdeeaaadccbabdcbcadcbcabbebedebbaec
+ddcabcaadcceddeddaccd_dbccebdbdaadbbbacacacdbbadccaeeeeecacdcaeacaacdebeb_bcabadcadbebdccbeeaadcebabacadcdbbabbcedadedbaaadaaacaaeadeabcedddaabadabecabcacdcbeaeedadacbbbbaeedadeeeabbcbeeebdaddaeadaecaaadbbedaacebdaceaddeeadacb
+ebdcebcddaecddcbabceceeabdbddbbedccbabcecda_beeabeadcbaedceb_caedccbcceedeadeedccdcbc_caaadcbddaccddbdaaddceabedbcddeaabbcbccddacddedcbbdbdabdcbaed_cedbbacbaeeaedbbddecab_eeedaaebaeaddaaeaeebdddaaecbabedcedcaddcbcecbbacbecedd_beabeccbb
+ecbccbbcbaddbdbebaedcedaaebcdebabcbaeb_eecceccddeddbabaceaecbaecabcbadbeeaddaadeaaadebeaedeaebbbdecdcdbcaeaacddadbdbcabcdadccbeacabdaebeabbeb_abeeaecbabeabbbbbddebeaeedadeadcddcaeedcbddaedecbbaaceadacceeea_debbacaaedcccadecabbeceddecd_bae_cecaaabdddbdcb_badbee
+eeddbabebcaabdbddebcbeabccbbdccdbcdaaddebdbddabddaeeacbdadcccdaadabacaccab_caebebeebebaaddbabececedddcbbddbacddbbbcacaedddedaeeddccaeceebaabbdeeddeabccdabddeddaeaebaaceacaadedccbdcbdbbadacddbbcdeeddcadccccacdbb_deaddcbbdbbcaaadaadcedcbbcabcbcbdda_deabadbadbadbbaebeaabbeedaeaacecaaaddcdeaebdade
+ccdebdaeabaadaeddaabacccbcccbaecbbcadeceacaddeebecbdeceababdcbeaeeeeeeeedcaeadbcbbdeabdecb_aedaaaaeebdcdacbcabedabcede_babcdc_adcbdc_bcccdadbbddcabeaabdbcbceebebaccdcaedbbacbebeecdccbaddeadeeedddbccecdddadd_ecbdebcccdbeadedbceddecacaaabedcadacbbadcaccdeddeabbdcddeeacaedbcbdeadbdecacbddbdbdeebb_ba
+daabbbdecaceedeabeb_baaaaeadbecaaccccebedcaacccaedaddcacddbddbdbdeeccbdceeebd_bccdecaaceddaaeaebedadbdedd_ea_eceeceeedbcebbeddab_ecdddadeaceaaadcdbabcdeadaecdceccd_debecaeaaebabaacaeacdbceccdacadae
+ba_bcaacaddcbaaddabcabbccbceedeaacddaeebaaedaccdc_cbccccedadedebabeeedbaccededeedbdcdceaacebdedcee_ededbdcecbabbbecaaeedbbadccbdcedccaecbbcdeddcbbbaabaaddeccebdcbbebcbedcbebbedbddcccd_eacbeadcacbbddaab_cbbdbbbdbdbdb_abcb
+dadecbceceeedadaedacdeddcebebdd_cadeacaaaeaaebccdbdacdeeacdebadcebaeeebeecbeaebcaddbbadbceeadaabccea
+bcadaeddbcadcabed_badddbacacaecdaddbbeceaaedbceadedabcdbbdcbbcceedacdeeeadcdacacaaceb_cccbaddc__dadbdedcacedcccaecaadaceedceeebacbbabbd
+ddeeadbdbdedddceabdbdbcddaaadddbdceddc_aeeeebabddeeaedcadddbdadceea_daabbadedaaabeadcedbbeddaaeebadcaeedeebbdcbadacbdbaaabdcdebcebbdeadaeaaaeedbbdbbaeedd_cad_ebdaeedcbbeeedbaecdbcbabedcddbdbebbbeabdbeccbadeadbeebbeddbabcdddcdadacbbccacaacdbdcebacbddadabdaccbcecdebaaddebcbce
+ccda_badcabbea_aaeccacbdceca_bdcdcececcbbebecebdceddeaacbdeeacadadebcdacbcdebeaaebebaabbcaaeeacbcebababaabbaedededcbcaccabadbcbadcaceeddedccbdaadeeecbdaeaceaacbcdccd
+daaeabccdddaaeabdbaecba_becceabdbaebdbdaacaebbedeeeacbcaebbcadaddacd_dededdedbabbbdccadcbebadbbdacaebdbdabdcceaceaeeadaaeddebebabaccbecaecaeddbecbacdeececacbaadbdcbbcccddabcdbeabbdbbcbbda_eaaeadbeeebdbebaabadcbdabebbadcebbdcdedbeeccccaeaecae_decbbacebdabacbaceceecebc
+ebeddbbcabccbbeadbbedadbcbbaebabbdcddeabeebaacdaaccedeadeecaddcceebcbecdeebedecebcbddeebbadcddcadebdecbccbd_adeedceeecbbdecadddeaeeddb_acaedeeabcdcbdeaacbcabeeccdccacdaeeececeddadebadcbeddeadedaadceadedcccdeccbbada
+bccbccdbadecbedccbbcbaededbcdbbecbdbcdeacceebedcbacdecccbddecbedcbeaadedbdccabcbdecdccdabceeadbaeebebbbaaecc_baadbcbdeeceaacbeeeb
+cdbccadadbeddeeccebddebbeaadbeeceaedbdcebdbaaadaacedbacddceaadbbabedddadeacaca_cbee__edcecdaeccadbcaeebecdcaddeceddbdbcbdedaddaecabadbcdbcbebebddbeccd_acebddcbdbbdceaaeacbcedbbdcdcaca_cade_cbccae
+eababeabcebacdecabdcebbcbcabccadacb_ddeaaebbbabebabcbebbcbbcdabebebaeaddbbedbaeaddecebeabaabeeabbaedeccbbaadbdbeacccaaaebdcdcebdaccbbaeabeddebaabeaceadaebbdbaaacedcaccbbccbacadbbeadbeaadbdaacabadbcbbecbedebdbaabdcaeceeddedddcbecbeaeeeeaacccdaaaaaeeabceccacdeacebecaebbbebaad_adaecedcaeddae
+aeeacaacaab_dbededaeeabadcbda_acaaabadbcecddbcaeceaabbccdaecaadbbdbbbbcbbddbdccdccddbbbaeabdadaeccbaebeccacbaeceecaeabcbbbbedcbdee_bebcdbbeabcceababacecebedeccbce_aaceceebddecacceceacebdceebaebbddeeda
+ecbdccaccbdebaceaabacabdcbebcdebbbcdbebebcecbbacaadbdbeacabbcbbcb_cdbcbdbbdeeaecededdedaeaedcebdbdbddceecdddbeaabbecedeadbcdb
+dadecaceddccceaadedeedcdcacbdceccdeadddbeccaeabbcbcbceebabbbccbcbecdbadebabccbdeecabcedbeedeacbebbdadcbeedaaeaebadeccbdabbcacedabcdcbdcdacedcdc_bdcbddaec_cddcbe
+bcdbedbccbebdae_ecbdaeeadcbbdecaedeb_ebabebabbdbdcdceccedcdedcccccddabecbcabeeeebdecceeacabbddbbcbc_eb_cdbeeedecebeebadedca_aeaeecdcaecdeeabeaaebabbabadabaaacbace_
+dadaaceeabdabdbabbdbcaeceddabbebacedeaaabdeaacaebcdaddacadeedcbbeeaadbdaacdaccccdeedbcaabeddabceaaabacaedeee_dabcdcdadbaaecdaacbeeccaebcdccaddeedcbddcacaeabbbbcccadabbdbdccccdeacecddeddbebdebd_bceabaebbdebaeeaddadadbedeedcdbdeddc_ebabbadbcaebcdbeeabbcecabbcdbdcedccacbcbbd
+ec_cacedcbabaacdceaaacccbbddccbbd_edcadbbbdbcadcabcccecaaaacbbcdbcebcdebbabedeeacbddbaaddbbdcdabdadcc_bcebeeeecddccdddbbeedcebdaeabccaecaeeaaebabededbeebdbbedeacbacedbeedbabbebcdddeaadceacdaadbebccbacadbebbcecbadebcacbbcaaceecacdcaebbabebabdcebaaedbcbebeeedaa_eadebdeccdcdcbcebdbbbcbeb
+cbbdabdadbbaddbeabeccaaeababbeaaedcbaaabaebbeeccae_baebbebdedbdbebdbeecedebdbbebcd_bceadeeaacacabecebcbcdbaabacaceebeedbaeebbbebcaccacdabaebbccedecdbabaddbcdbabdbdbbdecaadaeeacdceabdd
+dbbceeceedccbeebbadabdedcdabbdbededeaddaaaccbbebcbceacddaceaed_bcbcdbaadabacbbcedecacbdabcdccbcedabceadeabcabcbcccbbd_cebaedeaaeaddbadcdcbacecaaeaebdbaccba_ebdeabdaddeaeaaaeadddaedcdbabbedaecdbcececae_eddcdedddbccdcba_bdcdedbb
+cdadeecabcbbaadeedbbadeccadbedcddeecadcdbbadcecbdcbdbdbdcbcceabccadcadbdeccedcdeccbebdbbbcedceeebdaebcdccaedccbbdacaaeacecaeacabaacdbcadaacaebdcccdbdbebbcddcddddccecbcdccecdbaabecbeeadabddcdea_deedbda_ceaedaababbdaaacbdaedaede_bcddccddeccacdceabeebcbcaebaddcaeadd
+abdaccaeabeeabbbaaeacacebcccccbaebacdeecceaceaaddbebbbcbcdeedaebbdbabaebcbbdbceaeacdbbcebdcddceedaaadcacdacadceba_abadcbabacbdacdaabceddcbcadbbcdbeaecdacbc_dbdc_dbabdccebbbeaadbabedaccabcbddaecdcecddebcbdeecdcddcbcdbcbabdbbbdacdccabccebabeebcc_dbddaaab
