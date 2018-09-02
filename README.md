@@ -1,4 +1,4 @@
-# Turing Machine                                    <img align="right" width="100" height="150" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Alan_Turing_Aged_16.jpg/220px-Alan_Turing_Aged_16.jpg">
+# Turing Machine                                    <img align="right" width="100" height="120" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Alan_Turing_Aged_16.jpg/220px-Alan_Turing_Aged_16.jpg">
 
  ###  :computer: A program simulator for  Non-Deterministic Turing-Machines  :computer:
 The simulator was implemented with C-Language, for a project of Algorithms and Data Structure course, at Politecnico of Milan. Project also was valuated with pubblic and private test and graduated with highest mark.
