@@ -3,7 +3,7 @@
  ###  :computer: A program simulator for  Non-Deterministic Turing-Machines  :computer:
 The simulator was implemented with C-Language, for a project of Algorithms and Data Structure course, at Politecnico of Milan. 
 
-### input file ⌨️
+### ⌨️ input file ⌨️
 it's formed by:
 - **List of Turing Machine's transitions**;
 - **Final State(s)**: if a final state is reached, "1" will print, if not "0";
