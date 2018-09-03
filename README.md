@@ -15,4 +15,6 @@ An *example* of input file with clear explaination is [Here](https://github.com/
 
 All *tests* used are [Here](https://github.com/bresc19/turing_machine/tree/master/Tests) 
 
-
+### :package: Data Structure :package: ### 
+- **Transition**: they'are stored in a **n-ary tree**. 
+- **Computation**: It's a BFS, in order to get a final state or not. BFS is made *iterately*, so using a **circular array** to store transition crossed and tapes of every non-deterministic track; 
